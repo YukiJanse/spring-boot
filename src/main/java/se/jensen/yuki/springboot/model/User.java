@@ -1,19 +1,61 @@
 package se.jensen.yuki.springboot.model;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "app_user")
 public class User {
-    Long id;
-    String username;
-    String password;
-    String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String role;
+
+    @Column(name = "display_name", nullable = false)
+    private String displayName;
+
+    @Column(nullable = false)
+    private String bio;
+
+    @Column(name = "profile_image_path")
+    private String profileImagePath;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String role) {
-        this.id = id;
+    public User(String username, String email, String password, String role, String displayName, String bio, String profileImagePath) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.role = role;
+        this.displayName = displayName;
+        this.bio = bio;
+        this.profileImagePath = profileImagePath;
+    }
+
+    public void copy(User other) {
+        this.username = other.username;
+        this.email = other.email;
+        this.password = other.password;
+        this.role = other.role;
+        this.displayName = other.displayName;
+        this.bio = other.bio;
+        this.profileImagePath = other.profileImagePath;
     }
 
     public Long getId() {
@@ -46,5 +88,37 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }
