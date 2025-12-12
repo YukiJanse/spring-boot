@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.jensen.yuki.springboot.DTO.PostRequestDTO;
-import se.jensen.yuki.springboot.DTO.PostResponseDTO;
+import se.jensen.yuki.springboot.DTO.post.PostRequestDTO;
+import se.jensen.yuki.springboot.DTO.post.PostResponseDTO;
 import se.jensen.yuki.springboot.service.PostService;
 
 import java.util.List;

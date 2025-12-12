@@ -1,32 +1,29 @@
 package se.jensen.yuki.springboot.service;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.DTO.UserRequestDTO;
-import se.jensen.yuki.springboot.DTO.UserResponseDTO;
+import se.jensen.yuki.springboot.DTO.user.UpdateUserDisplayNameDTO;
+import se.jensen.yuki.springboot.DTO.user.UserRequestDTO;
+import se.jensen.yuki.springboot.DTO.user.UserResponseDTO;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
+import se.jensen.yuki.springboot.mapper.UserMapper;
 import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.UserRepository;
-import se.jensen.yuki.springboot.util.UserMapper;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserMapper userMapper;
-    private final UserRepository repo;
-    //private final List<User> users = new ArrayList<>();
-
-    public UserService(UserMapper userMapper, UserRepository repo) {
-        this.userMapper = userMapper;
-        this.repo = repo;
-    }
+    private final UserRepository userRepository;
 
     public List<UserResponseDTO> getAllUsers() {
         log.info("Starting to get all users");
-        return repo.findAll()
+        return userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponse)
                 .toList();
@@ -38,7 +35,7 @@ public class UserService {
             log.warn("Tried to get a user with invalid ID={}", id);
             throw new IllegalArgumentException("Invalid ID");
         }
-        return repo.findById(id)
+        return userRepository.findById(id)
                 .map(userMapper::toResponse)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
@@ -46,24 +43,24 @@ public class UserService {
     public UserResponseDTO addUser(UserRequestDTO requestDTO) {
         log.info("Starting to add a user");
         User user = userMapper.toUser(requestDTO);
-        if (repo.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
+        if (userRepository.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
             throw new IllegalArgumentException("Username: " + user.getUsername() + " or Email: " + user.getEmail() + " already exists");
         }
-        user = repo.save(user);
+        user = userRepository.save(user);
         log.info("Added a user successfully");
         return userMapper.toResponse(user);
     }
 
-    public UserResponseDTO updateUser(Long id, UserRequestDTO requestDTO) {
+    public UserResponseDTO updateUser(Long id, UpdateUserDisplayNameDTO updateUserDTO) {
         log.info("Starting to update a user with ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to update a user with invalid ID={}", id);
             throw new IllegalArgumentException("Invalid ID");
         }
-        User user = userMapper.toUser(requestDTO);
-        User currentUser = repo.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
-        currentUser.copy(user);
-        User renewedUser = repo.save(currentUser);
+
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        userMapper.updateFromDisplayNameDTO(updateUserDTO, user);
+        User renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }
@@ -74,7 +71,7 @@ public class UserService {
             log.warn("Tried to delete a user with invalid ID={}", id);
             throw new IllegalArgumentException("No users found");
         }
-        repo.deleteById(id);
+        userRepository.deleteById(id);
         log.info("Deleted a user successfully by ID={}", id);
     }
 

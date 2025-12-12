@@ -4,15 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.DTO.PostRequestDTO;
-import se.jensen.yuki.springboot.DTO.PostResponseDTO;
+import se.jensen.yuki.springboot.DTO.post.PostRequestDTO;
+import se.jensen.yuki.springboot.DTO.post.PostResponseDTO;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
+import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.PostRepository;
 import se.jensen.yuki.springboot.repository.UserRepository;
-import se.jensen.yuki.springboot.util.PostMapper;
 
 import java.util.List;
 

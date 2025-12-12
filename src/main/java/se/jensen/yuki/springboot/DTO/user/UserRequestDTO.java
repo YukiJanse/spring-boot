@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.DTO;
+package se.jensen.yuki.springboot.DTO.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

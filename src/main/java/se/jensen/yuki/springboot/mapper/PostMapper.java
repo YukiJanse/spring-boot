@@ -1,11 +1,11 @@
-package se.jensen.yuki.springboot.util;
+package se.jensen.yuki.springboot.mapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
-import se.jensen.yuki.springboot.DTO.PostRequestDTO;
-import se.jensen.yuki.springboot.DTO.PostResponseDTO;
+import se.jensen.yuki.springboot.DTO.post.PostRequestDTO;
+import se.jensen.yuki.springboot.DTO.post.PostResponseDTO;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.model.User;
 

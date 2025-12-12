@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.DTO;
+package se.jensen.yuki.springboot.DTO.post;
 
 import java.time.LocalDateTime;
 

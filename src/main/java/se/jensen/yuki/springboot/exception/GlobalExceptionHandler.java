@@ -43,4 +43,10 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }
