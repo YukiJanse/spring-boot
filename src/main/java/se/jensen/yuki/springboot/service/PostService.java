@@ -66,7 +66,7 @@ public class PostService {
         User author = userRepository.findById(requestDTO.userId()).orElseThrow(() -> new UserNotFoundException("The post's author doesn't exist"));
         Post post = postMapper.toPost(requestDTO, author);
         Post currentPost = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("No post found with id= " + id));
-        currentPost.setContents(post.getContents());
+        currentPost.setContent(post.getContent());
         log.info("Updated a post successfully with ID={}", id);
         return postMapper.toResponse(postRepository.save(currentPost));
     }

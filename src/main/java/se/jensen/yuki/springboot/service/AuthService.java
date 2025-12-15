@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.DTO.auth.AuthRegisterRequestDTO;
@@ -49,7 +48,7 @@ public class AuthService {
         );
 
         User user = userRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Wrong email or password"));
 
         if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
             throw new RuntimeException("Wrong email or password");

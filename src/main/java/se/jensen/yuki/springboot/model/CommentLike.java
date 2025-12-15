@@ -14,27 +14,28 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "posts")
-public class Post {
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_comment_like_user_comment",
+                columnNames = {"user_id", "comment_id"}
+        )
+)
+public class CommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
-
-    @CreationTimestamp
-    @Column(name = "create_at", nullable = false)
-    private Instant createdAt;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "original_post_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "comment_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post originalPost;
+    private Comment comment;
 
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 }

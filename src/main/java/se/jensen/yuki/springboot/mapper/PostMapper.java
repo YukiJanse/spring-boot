@@ -1,27 +1,16 @@
 package se.jensen.yuki.springboot.mapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import se.jensen.yuki.springboot.DTO.post.PostRequestDTO;
 import se.jensen.yuki.springboot.DTO.post.PostResponseDTO;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.model.User;
 
-import java.time.LocalDateTime;
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+public interface PostMapper {
 
-@Component
-public class PostMapper {
-    private static final Logger log = LoggerFactory.getLogger(PostMapping.class);
+    Post toPost(PostRequestDTO requestDTO, User author);
 
-    public Post toPost(PostRequestDTO requestDTO, User author) {
-        log.info("Mapping Post from request (text={})", requestDTO.text());
-        return new Post(null, requestDTO.text(), LocalDateTime.now(), 0, author);
-    }
-
-    public PostResponseDTO toResponse(Post post) {
-        log.info("Mapping Response from Post (id={}, text={}, createdAt={})", post.getId(), post.getContents(), post.getCreatedAt());
-        return new PostResponseDTO(post.getId(), post.getContents(), post.getCreatedAt(), post.getUser().getId());
-    }
+    PostResponseDTO toResponse(Post post);
 }

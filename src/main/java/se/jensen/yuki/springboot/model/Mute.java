@@ -14,27 +14,28 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "posts")
-public class Post {
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_mute_muting_muted",
+                columnNames = {"muting_id", "muted_id"}
+        )
+)
+public class Mute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "muting_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User muting;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "muted_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User muted;
 
     @CreationTimestamp
-    @Column(name = "create_at", nullable = false)
+    @Column(nullable = false, updatable = false)
     private Instant createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "original_post_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post originalPost;
-
 }
