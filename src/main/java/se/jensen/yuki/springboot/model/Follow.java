@@ -2,11 +2,8 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -15,12 +12,13 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Table(
+        name = "follows",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_follow_following_followed",
+                name = "uk_follows_follower_followed",
                 columnNames = {"follower_id", "followed_id"}
         )
 )
-public class Follow {
+public class Follow extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +32,4 @@ public class Follow {
     @JoinColumn(name = "followed_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User followed;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
 }

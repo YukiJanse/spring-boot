@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.DTO.auth;
+package se.jensen.yuki.springboot.dto.auth;
 
 public record JwtResponseDTO(
         String token,

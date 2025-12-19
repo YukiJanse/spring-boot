@@ -2,10 +2,7 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -14,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "app_user")
-public class User {
+@Table(name = "users")
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,16 +35,8 @@ public class User {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String bio;
 
-    @Column(name = "profile_image_path")
+    @Column(name = "avatar_url")
     private String avatarUrl;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
-
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private Instant updatedAt;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;

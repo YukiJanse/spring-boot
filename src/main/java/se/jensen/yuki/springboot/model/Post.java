@@ -2,11 +2,8 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -15,7 +12,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Table(name = "posts")
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,18 +20,14 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @CreationTimestamp
-    @Column(name = "create_at", nullable = false)
-    private Instant createdAt;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "original_post_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Post originalPost;
 
 }

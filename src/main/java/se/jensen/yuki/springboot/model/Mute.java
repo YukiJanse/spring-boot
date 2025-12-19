@@ -2,11 +2,8 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -15,12 +12,13 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Table(
+        name = "mutes",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_mute_muting_muted",
+                name = "uk_mutes_muting_muted",
                 columnNames = {"muting_id", "muted_id"}
         )
 )
-public class Mute {
+public class Mute extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +32,4 @@ public class Mute {
     @JoinColumn(name = "muted_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User muted;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
 }

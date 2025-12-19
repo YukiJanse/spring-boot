@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.jensen.yuki.springboot.DTO.user.UpdateUserDisplayNameDTO;
-import se.jensen.yuki.springboot.DTO.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.UpdateUserDisplayNameDTO;
+import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
 import se.jensen.yuki.springboot.service.UserService;
 
 import java.util.List;

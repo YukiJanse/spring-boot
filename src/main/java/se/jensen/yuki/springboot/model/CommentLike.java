@@ -2,11 +2,8 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -15,12 +12,13 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Table(
+        name = "comment_likes",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_comment_like_user_comment",
+                name = "uk_comment_likes_user_comment",
                 columnNames = {"user_id", "comment_id"}
         )
 )
-public class CommentLike {
+public class CommentLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +32,4 @@ public class CommentLike {
     @JoinColumn(name = "comment_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
 }

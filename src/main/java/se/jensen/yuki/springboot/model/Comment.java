@@ -5,29 +5,27 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.Instant;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Comment {
+@Table(name = "comments")
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String content;
 
-    private Instant createdAt;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
@@ -36,8 +34,10 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parent;
 
+    @Column(nullable = false)
     private boolean deleted;
 
+    @Column(nullable = false)
     private boolean edited;
 
 }

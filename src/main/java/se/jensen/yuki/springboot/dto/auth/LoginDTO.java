@@ -1,15 +1,10 @@
-package se.jensen.yuki.springboot.DTO.auth;
+package se.jensen.yuki.springboot.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record AuthRegisterRequestDTO(
-        @NotBlank(message = "It can't be empty")
-        @Size(min = 3, max = 50, message = "It must be between 3 - 50 letters")
-        @Pattern(regexp = "^[A-Za-z0-9 ]*$", message = "Only letters, numbers and space allowed")
-        String username,
-
+public record LoginDTO(
         @NotBlank(message = "It can't be empty")
         @Size(min = 3, max = 60, message = "It must be between 3 - 60 letters")
         @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",

@@ -3,7 +3,7 @@ package se.jensen.yuki.springboot.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import se.jensen.yuki.springboot.DTO.auth.AuthRegisterRequestDTO;
+import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
 import se.jensen.yuki.springboot.model.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

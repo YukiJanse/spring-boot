@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.jensen.yuki.springboot.DTO.auth.AuthRegisterRequestDTO;
-import se.jensen.yuki.springboot.DTO.auth.JwtResponseDTO;
-import se.jensen.yuki.springboot.DTO.auth.LoginDTO;
+import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
+import se.jensen.yuki.springboot.dto.auth.JwtResponseDTO;
+import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.service.AuthService;
 
 @RestController

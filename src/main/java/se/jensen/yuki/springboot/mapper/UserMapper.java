@@ -3,10 +3,10 @@ package se.jensen.yuki.springboot.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import se.jensen.yuki.springboot.DTO.user.UpdateEmailDTO;
-import se.jensen.yuki.springboot.DTO.user.UpdateUserDisplayNameDTO;
-import se.jensen.yuki.springboot.DTO.user.UserRequestDTO;
-import se.jensen.yuki.springboot.DTO.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.UpdateEmailDTO;
+import se.jensen.yuki.springboot.dto.user.UpdateUserDisplayNameDTO;
+import se.jensen.yuki.springboot.dto.user.UserRequestDTO;
+import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
 import se.jensen.yuki.springboot.model.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

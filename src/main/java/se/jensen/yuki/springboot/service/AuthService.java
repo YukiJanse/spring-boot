@@ -4,12 +4,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.DTO.auth.AuthRegisterRequestDTO;
-import se.jensen.yuki.springboot.DTO.auth.JwtResponseDTO;
-import se.jensen.yuki.springboot.DTO.auth.LoginDTO;
+import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
+import se.jensen.yuki.springboot.dto.auth.JwtResponseDTO;
+import se.jensen.yuki.springboot.dto.auth.LoginDTO;
+import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.mapper.AuthMapper;
+import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.UserRepository;
 
@@ -57,5 +61,21 @@ public class AuthService {
                 jwtService.generateToken(user),
                 "Bearer"
         );
+    }
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UnauthorizedException("You need to login");
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof SecurityUser securityUser) {
+            return securityUser.getId();
+        }
+
+        throw new IllegalStateException("Invalid principal");
     }
 }

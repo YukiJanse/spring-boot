@@ -49,4 +49,28 @@ public class GlobalExceptionHandler {
         log.warn(ex.getMessage());
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<String> handleUnauthorizedException(UnauthorizedException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<String> handlePostNotFoundException(PostNotFoundException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<String> handleCommentNotFoundException(CommentNotFoundException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }

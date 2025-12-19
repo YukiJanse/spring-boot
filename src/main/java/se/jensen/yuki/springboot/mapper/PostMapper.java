@@ -1,16 +1,24 @@
 package se.jensen.yuki.springboot.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import se.jensen.yuki.springboot.DTO.post.PostRequestDTO;
-import se.jensen.yuki.springboot.DTO.post.PostResponseDTO;
+import se.jensen.yuki.springboot.dto.post.PostCreateRequest;
+import se.jensen.yuki.springboot.dto.post.PostCreateResponse;
+import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.model.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostMapper {
 
-    Post toPost(PostRequestDTO requestDTO, User author);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", expression = "java(author)")
+    @Mapping(target = "originalPost", ignore = true)
+    Post PostCreateToPost(PostCreateRequest requestDTO, User author);
 
-    PostResponseDTO toResponse(Post post);
+    PostCreateResponse toCreateResponse(Post post);
+
+    
+    PostFeedResponse toFeedResponse(Post post);
 }

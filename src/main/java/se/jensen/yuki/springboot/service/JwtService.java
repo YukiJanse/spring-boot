@@ -36,7 +36,7 @@ public class JwtService {
         byte[] keyBytes = SECRET_KEY.getBytes();
         Key key = Keys.hmacShaKeyFor(keyBytes);
         return Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(SignatureAlgorithm.HS256, key)

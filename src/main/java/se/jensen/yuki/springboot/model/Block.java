@@ -2,11 +2,8 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -17,11 +14,11 @@ import java.time.Instant;
 @Table(
         name = "blocks",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_block_blocking_blocked",
+                name = "uk_blocks_blocking_blocked",
                 columnNames = {"blocking_id", "blocked_id"}
         )
 )
-public class Block {
+public class Block extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,8 +32,4 @@ public class Block {
     @JoinColumn(name = "blocked_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User blocked;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
 }
