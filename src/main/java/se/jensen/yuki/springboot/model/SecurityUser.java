@@ -9,18 +9,27 @@ import java.util.Collection;
 import java.util.List;
 
 public class SecurityUser implements UserDetails {
-    private final User user;
+    private final Long id;
+    private final String email;
+    private final String role;
+    private final String password;
 
     public SecurityUser(User user) {
-        this.user = user;
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+        this.password = user.getPassword();
+    }
+
+    public SecurityUser(Long id, String email, String role) {
+        this.id = id;
+        this.email = email;
+        this.role = role;
+        this.password = null;
     }
 
     public Long getId() {
-        return user.getId();
-    }
-
-    public User getUser() {
-        return user;
+        return id;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String r = user.getRole();
+        String r = role;
         String role = r == null || r.isBlank() ? "ROLE_USER" :
                 (r.startsWith("ROLE_") ? r : "ROLE_" + r);
         return List.of(new SimpleGrantedAuthority(role));
@@ -53,11 +62,11 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return email;
     }
 }

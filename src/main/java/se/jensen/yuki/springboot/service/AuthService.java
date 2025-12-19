@@ -43,24 +43,20 @@ public class AuthService {
         User registeredUser = userRepository.save(user);
 
         return new JwtResponseDTO(
-                jwtService.generateToken(registeredUser),
+                jwtService.generateToken(registeredUser.getId()),
                 "Bearer"
         );
     }
 
     public JwtResponseDTO login(LoginDTO dto) {
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
         );
 
-        User user = userRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new RuntimeException("Wrong email or password"));
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
 
-        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
-            throw new RuntimeException("Wrong email or password");
-        }
         return new JwtResponseDTO(
-                jwtService.generateToken(user),
+                jwtService.generateToken(securityUser.getId()),
                 "Bearer"
         );
     }
