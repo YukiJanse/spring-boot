@@ -3,6 +3,7 @@ package se.jensen.yuki.springboot.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
 import se.jensen.yuki.springboot.dto.auth.JwtResponseDTO;
 import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.exception.UnauthorizedException;
+import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.AuthMapper;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.model.User;
@@ -77,5 +79,14 @@ public class AuthService {
         }
 
         throw new IllegalStateException("Invalid principal");
+    }
+
+    public void checkCurrentPassword(String currentPassword) {
+        Long userId = getCurrentUserId();
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No user found"));
+        if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
+            throw new BadCredentialsException("Wrong password");
+        }
     }
 }

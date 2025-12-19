@@ -1,12 +1,16 @@
 package se.jensen.yuki.springboot.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.dto.user.UpdateUserDisplayNameDTO;
-import se.jensen.yuki.springboot.dto.user.UserRequestDTO;
 import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.UserUpdateEmailRequest;
+import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
+import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.UserMapper;
 import se.jensen.yuki.springboot.model.User;
@@ -20,6 +24,7 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getAllUsers() {
         log.info("Starting to get all users");
@@ -40,18 +45,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public UserResponseDTO addUser(UserRequestDTO requestDTO) {
-        log.info("Starting to add a user");
-        User user = userMapper.toUser(requestDTO);
-        if (userRepository.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
-            throw new IllegalArgumentException("Username: " + user.getUsername() + " or Email: " + user.getEmail() + " already exists");
-        }
-        user = userRepository.save(user);
-        log.info("Added a user successfully");
-        return userMapper.toResponse(user);
-    }
-
-    public UserResponseDTO updateUser(Long id, UpdateUserDisplayNameDTO updateUserDTO) {
+    public UserResponseDTO updateProfile(Long id, UserUpdateProfileRequest request) {
         log.info("Starting to update a user with ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to update a user with invalid ID={}", id);
@@ -59,7 +53,7 @@ public class UserService {
         }
 
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
-        userMapper.updateFromDisplayNameDTO(updateUserDTO, user);
+        userMapper.FromUpdateProfileRequest(request, user);
         User renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
@@ -76,4 +70,32 @@ public class UserService {
     }
 
 
+    public @Nullable UserResponseDTO updateEmail(Long id, @Valid UserUpdateEmailRequest request) {
+        log.info("Starting to update a user with ID={}", id);
+        if (id == null || id < 0) {
+            log.warn("Tried to update a user with invalid ID={}", id);
+            throw new IllegalArgumentException("Invalid ID");
+        }
+
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        userMapper.FromUpdateEmailRequest(request, user);
+        User renewedUser = userRepository.save(user);
+        log.info("Updated a user successfully with ID={}", id);
+        return userMapper.toResponse(renewedUser);
+    }
+
+    public @Nullable UserResponseDTO updatePassword(Long id, @Valid UserUpdatePasswordRequest request) {
+        log.info("Starting to update a user with ID={}", id);
+        if (id == null || id < 0) {
+            log.warn("Tried to update a user with invalid ID={}", id);
+            throw new IllegalArgumentException("Invalid ID");
+        }
+
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+//        userMapper.FromUpdatePasswordRequest(request, user);
+        User renewedUser = userRepository.save(user);
+        log.info("Updated a user successfully with ID={}", id);
+        return userMapper.toResponse(renewedUser);
+    }
 }

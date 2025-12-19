@@ -1,12 +1,11 @@
 package se.jensen.yuki.springboot.mapper;
 
+import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import se.jensen.yuki.springboot.dto.user.UpdateEmailDTO;
-import se.jensen.yuki.springboot.dto.user.UpdateUserDisplayNameDTO;
-import se.jensen.yuki.springboot.dto.user.UserRequestDTO;
-import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.*;
 import se.jensen.yuki.springboot.model.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -18,7 +17,12 @@ public interface UserMapper {
 
     UserResponseDTO toResponse(User user);
 
-    void updateFromDisplayNameDTO(UpdateUserDisplayNameDTO dto, @MappingTarget User user);
+    void FromUpdateProfileRequest(UserUpdateProfileRequest dto, @MappingTarget User user);
 
     void updateFromEmail(UpdateEmailDTO dto, @MappingTarget User user);
+
+    void FromUpdateEmailRequest(@Valid UserUpdateEmailRequest request, @MappingTarget User user);
+
+    @Mapping(target = "password", source = "request.newPassword")
+    void FromUpdatePasswordRequest(@Valid UserUpdatePasswordRequest request, @MappingTarget User user);
 }
