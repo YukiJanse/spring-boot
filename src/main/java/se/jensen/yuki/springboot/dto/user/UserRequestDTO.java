@@ -40,6 +40,6 @@ public record UserRequestDTO(
         @Size(max = 30, message = "It must be max 30 letters")
         @Pattern(regexp = "^/(?:[^/\0]+/)*[^/\0]*$",
                 message = "Only letters, numbers, space, \",\" and \".\" allowed")
-        String profileImagePath
+        String avatarUrl
 ) {
 }

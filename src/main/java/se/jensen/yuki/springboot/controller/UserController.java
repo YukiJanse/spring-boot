@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.UserProfileResponse;
 import se.jensen.yuki.springboot.dto.user.UserUpdateEmailRequest;
 import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
 import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
@@ -24,13 +24,13 @@ public class UserController {
     private final AuthService authService;
 
     @GetMapping("/admin/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+    public ResponseEntity<List<UserProfileResponse>> getAllUsers() {
         log.info("Starting to get all users");
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> getMyProfile() {
+    public ResponseEntity<UserProfileResponse> getMyProfile() {
         log.info("Starting to get my profile");
         return ResponseEntity
                 .ok()
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable Long id) {
         log.info("Starting to get a user by ID={}", id);
         return ResponseEntity
                 .ok()
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/me/profile")
-    public ResponseEntity<UserResponseDTO> updateProfile(@Valid @RequestBody UserUpdateProfileRequest request) {
+    public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UserUpdateProfileRequest request) {
         log.info("Stating to update my profilee");
         return ResponseEntity
                 .ok()
@@ -54,21 +54,21 @@ public class UserController {
     }
 
     @PutMapping("/me/email")
-    public ResponseEntity<UserResponseDTO> updateEmail(@Valid @RequestBody UserUpdateEmailRequest request) {
+    public ResponseEntity<Void> updateEmail(@Valid @RequestBody UserUpdateEmailRequest request) {
         authService.checkCurrentPassword(request.currentPassword());
         log.info("Stating to update my Account");
+        userService.updateEmail(authService.getCurrentUserId(), request);
         return ResponseEntity
-                .ok()
-                .body(userService.updateEmail(authService.getCurrentUserId(), request));
+                .noContent()
+                .build();
     }
 
     @PutMapping("/me/password")
-    public ResponseEntity<UserResponseDTO> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request) {
+    public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request) {
         authService.checkCurrentPassword(request.currentPassword());
         log.info("Stating to update my Account");
-        return ResponseEntity
-                .ok()
-                .body(userService.updatePassword(authService.getCurrentUserId(), request));
+        userService.updatePassword(authService.getCurrentUserId(), request);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

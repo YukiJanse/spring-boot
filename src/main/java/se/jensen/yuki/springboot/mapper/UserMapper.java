@@ -15,11 +15,9 @@ public interface UserMapper {
 //    @Mapping(target = "posts", ignore = true)
     User toUser(UserRequestDTO dto);
 
-    UserResponseDTO toResponse(User user);
+    UserProfileResponse toResponse(User user);
 
     void FromUpdateProfileRequest(UserUpdateProfileRequest dto, @MappingTarget User user);
-
-    void updateFromEmail(UpdateEmailDTO dto, @MappingTarget User user);
 
     void FromUpdateEmailRequest(@Valid UserUpdateEmailRequest request, @MappingTarget User user);
 

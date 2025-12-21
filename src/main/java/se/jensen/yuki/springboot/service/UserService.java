@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.dto.user.UserResponseDTO;
+import se.jensen.yuki.springboot.dto.user.UserProfileResponse;
 import se.jensen.yuki.springboot.dto.user.UserUpdateEmailRequest;
 import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
 import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
@@ -26,7 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserResponseDTO> getAllUsers() {
+    public List<UserProfileResponse> getAllUsers() {
         log.info("Starting to get all users");
         return userRepository.findAll()
                 .stream()
@@ -34,7 +34,7 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO getUserById(Long id) {
+    public UserProfileResponse getUserById(Long id) {
         log.info("Starting to get a user by ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to get a user with invalid ID={}", id);
@@ -45,7 +45,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public UserResponseDTO updateProfile(Long id, UserUpdateProfileRequest request) {
+    public UserProfileResponse updateProfile(Long id, UserUpdateProfileRequest request) {
         log.info("Starting to update a user with ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to update a user with invalid ID={}", id);
@@ -70,7 +70,7 @@ public class UserService {
     }
 
 
-    public @Nullable UserResponseDTO updateEmail(Long id, @Valid UserUpdateEmailRequest request) {
+    public @Nullable UserProfileResponse updateEmail(Long id, @Valid UserUpdateEmailRequest request) {
         log.info("Starting to update a user with ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to update a user with invalid ID={}", id);
@@ -84,7 +84,7 @@ public class UserService {
         return userMapper.toResponse(renewedUser);
     }
 
-    public @Nullable UserResponseDTO updatePassword(Long id, @Valid UserUpdatePasswordRequest request) {
+    public @Nullable UserProfileResponse updatePassword(Long id, @Valid UserUpdatePasswordRequest request) {
         log.info("Starting to update a user with ID={}", id);
         if (id == null || id < 0) {
             log.warn("Tried to update a user with invalid ID={}", id);
