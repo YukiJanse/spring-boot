@@ -32,6 +32,6 @@ public class PostLikeController {
     @DeleteMapping
     public ResponseEntity<LikeResponse> unLikePost(@PathVariable Long postId) {
         Long userId = authService.getCurrentUserId();
-        return ResponseEntity.ok().body(likeService.likePost(postId, userId));
+        return ResponseEntity.ok().body(likeService.unlikePost(postId, userId));
     }
 }
