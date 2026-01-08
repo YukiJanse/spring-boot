@@ -52,14 +52,15 @@ public class FollowController {
     @PostMapping("/{userId}")
     public ResponseEntity<FollowResponse> followUser(@PathVariable Long userId) {
         Long currentUserId = authService.getCurrentUserId();
-        System.out.println("Current User ID: " + currentUserId + ", Target User ID: " + userId);
         return ResponseEntity.ok().body(followService.followUser(currentUserId, userId));
     }
 
     // DELETE /follows/{userId}
     @DeleteMapping("/{userId}")
-    public ResponseEntity<FollowResponse> unfollowUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> unfollowUser(@PathVariable Long userId) {
         Long currentUserId = authService.getCurrentUserId();
-        return ResponseEntity.ok().body(followService.unfollowUser(currentUserId, userId));
+        return followService.unfollowUser(currentUserId, userId) ?
+                ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

@@ -25,25 +25,21 @@ public class FollowService {
     }
 
     public @Nullable FollowResponse followUser(Long currentUserId, Long userId) {
-        System.out.println("Attempting to follow user: Follower ID = " + currentUserId + ", Followed ID = " + userId);
         if (followRepository.existsByFollowerIdAndFollowedId(currentUserId, userId)) {
-            System.out.println("Follow relationship already exists.");
             return followRepository.findByFollowerIdAndFollowedId(currentUserId, userId);
         } else {
             // Create follow relationship
-            System.out.println("Creating follow relationship: Follower ID = " + currentUserId + ", Followed ID = " + userId);
             followRepository.createFollowRelationship(currentUserId, userId);
-            System.out.println("Follow relationship created.");
             return followRepository.findByFollowerIdAndFollowedId(currentUserId, userId);
         }
     }
 
-    public @Nullable FollowResponse unfollowUser(Long currentUserId, Long userId) {
+    public boolean unfollowUser(Long currentUserId, Long userId) {
         if (followRepository.existsByFollowerIdAndFollowedId(currentUserId, userId)) {
             followRepository.deleteByFollowerIdAndFollowedId(currentUserId, userId);
-            return followRepository.findByFollowerIdAndFollowedId(currentUserId, userId);
+            return true;
         } else {
-            return followRepository.findByFollowerIdAndFollowedId(currentUserId, userId);
+            return false;
         }
     }
 }
