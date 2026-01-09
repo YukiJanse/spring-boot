@@ -10,27 +10,75 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
-import se.jensen.yuki.springboot.dto.auth.JwtResponseDTO;
 import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.mapper.AuthMapper;
+import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
 import se.jensen.yuki.springboot.repository.UserRepository;
+
+import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final AuthMapper authMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    private final long refreshTokenDurationSeconds = 60L * 60 * 24 * 30; // 30 days
+
+    public RefreshToken createRefreshToken(User user) {
+        RefreshToken rt = RefreshToken.builder()
+                .user(user)
+                .token(generateTokenValue())
+                .expiresAt(Instant.now().plusSeconds(refreshTokenDurationSeconds))
+                .revoked(false)
+                .build();
+        return refreshTokenRepository.save(rt);
+    }
+
+    public Optional<TokenPair> refreshAccessToken(String refreshTokenValue) {
+        Optional<RefreshToken> found = refreshTokenRepository.findByToken(refreshTokenValue);
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+
+        RefreshToken rt = found.get();
+        if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
+            // revoke/clean up the token
+            rt.setRevoked(true);
+            refreshTokenRepository.save(rt);
+            return Optional.empty();
+        }
+
+        User user = rt.getUser();
+        // rotation: revoke old token and create a new one
+        rt.setRevoked(true);
+        refreshTokenRepository.save(rt);
+
+        RefreshToken newRt = createRefreshToken(user);
+        String newAccessToken = jwtService.generateAccessToken(user.getId());
+
+        return Optional.of(new TokenPair(newAccessToken, newRt.getToken()));
+    }
+
+    public void revokeAllForUser(Long userId) {
+        refreshTokenRepository.deleteByUserId(userId);
+    }
+
+    private String generateTokenValue() {
+        return UUID.randomUUID().toString() + "-" + UUID.randomUUID();
+    }
 
     @Transactional
-    public JwtResponseDTO registerUser(AuthRegisterRequestDTO dto) {
-        //User user = authMapper.registerDtoToUser(dto);
+    public TokenPair registerUser(AuthRegisterRequestDTO dto) {
         User user = User.builder()
                 .username(dto.username())
                 .email(dto.email())
@@ -41,24 +89,24 @@ public class AuthService {
                 .build();
 
         User registeredUser = userRepository.save(user);
+        String access = jwtService.generateAccessToken(registeredUser.getId());
+        RefreshToken rt = createRefreshToken(registeredUser);
 
-        return new JwtResponseDTO(
-                jwtService.generateToken(registeredUser.getId()),
-                "Bearer"
-        );
+        return new TokenPair(access, rt.getToken());
     }
 
-    public JwtResponseDTO login(LoginDTO dto) {
+    public TokenPair login(LoginDTO dto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
         );
 
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        User user = userRepository.findById(securityUser.getId())
+                .orElseThrow(() -> new UserNotFoundException("No user found"));
+        String access = jwtService.generateAccessToken(securityUser.getId());
+        RefreshToken rt = createRefreshToken(user);
 
-        return new JwtResponseDTO(
-                jwtService.generateToken(securityUser.getId()),
-                "Bearer"
-        );
+        return new TokenPair(access, rt.getToken());
     }
 
     public Long getCurrentUserId() {
@@ -84,5 +132,8 @@ public class AuthService {
         if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }
+    }
+
+    public record TokenPair(String accessToken, String refreshToken) {
     }
 }

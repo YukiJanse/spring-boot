@@ -1,8 +1,6 @@
 package se.jensen.yuki.springboot.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    //private final String SECRET_KEY = "TEST_SECRET_KEY_1234567890_ABCDEFGHIJKL_TESTING_ONLY_987654321"; // It must come from Environmental variable
     private final long expirationMs;
     private final Key key;
 
@@ -30,21 +27,33 @@ public class JwtService {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        final Claims claims = parseClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(Long userId) {
+    public String generateAccessToken(Long userId) {
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            parseClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private Claims parseClaims(String token) {
+        Jws<Claims> jws = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+        return jws.getBody();
     }
 }

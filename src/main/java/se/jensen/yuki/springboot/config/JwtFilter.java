@@ -1,6 +1,5 @@
 package se.jensen.yuki.springboot.config;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         final String jwt = authHeader.substring(7);
 
-        Long userId;
-        try {
-            userId = jwtService.extractUserId(jwt);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException(e);
+        if (!jwtService.validateToken(jwt)) {
+            // invalid token: do not set authentication, just continue
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        Long userId = jwtService.extractUserId(jwt);
 
         SecurityUser securityUser = new SecurityUser(userId, null, null);
         UsernamePasswordAuthenticationToken authToken =
