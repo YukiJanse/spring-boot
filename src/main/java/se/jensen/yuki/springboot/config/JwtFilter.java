@@ -9,7 +9,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.model.SecurityUser;
+import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.repository.UserRepository;
 import se.jensen.yuki.springboot.service.JwtService;
 
 import java.io.IOException;
@@ -18,6 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,7 +45,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Long userId = jwtService.extractUserId(jwt);
 
-        SecurityUser securityUser = new SecurityUser(userId, null, null);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UnauthorizedException("User not found"));
+
+        SecurityUser securityUser = new SecurityUser(user);
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(
                         securityUser,

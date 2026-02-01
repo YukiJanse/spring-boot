@@ -76,7 +76,7 @@ public class AuthController {
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(false) // set to true in production
+                .secure(false) // TODO: set to true in production
                 .path("/")
                 .maxAge(60L * 60 * 24 * 30)
                 .sameSite("Strict")
