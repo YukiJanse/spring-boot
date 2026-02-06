@@ -13,8 +13,12 @@ import se.jensen.yuki.springboot.dto.like.LikeResponse;
 import se.jensen.yuki.springboot.dto.like.PostLikeResponse;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.*;
+import se.jensen.yuki.springboot.repository.CommentLikeRepository;
+import se.jensen.yuki.springboot.repository.CommentRepository;
+import se.jensen.yuki.springboot.repository.PostLikeRepository;
+import se.jensen.yuki.springboot.repository.PostRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,7 +45,7 @@ class LikeServiceIntegrationTest {
     @Autowired
     private CommentLikeRepository commentLikeRepository;
 
-    private User user;
+    private UserJpaEntity user;
     private Post post;
     private Comment comment;
 
@@ -49,7 +53,7 @@ class LikeServiceIntegrationTest {
     void setUp() {
 
         user = userRepository.save(
-                User.builder()
+                UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
                         .password("pass")

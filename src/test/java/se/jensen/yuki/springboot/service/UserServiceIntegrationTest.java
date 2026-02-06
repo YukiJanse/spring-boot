@@ -7,12 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import se.jensen.yuki.springboot.dto.user.UserProfileResponse;
-import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
-import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserService;
+import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
 import java.util.Optional;
 
@@ -34,11 +35,11 @@ class UserServiceIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private User testUser;
+    private UserJpaEntity testUser;
 
     @BeforeEach
     void setUp() {
-        testUser = User.builder()
+        testUser = UserJpaEntity.builder()
                 .username("testuser")
                 .email("test@test.com")
                 .password(passwordEncoder.encode("password"))
@@ -96,7 +97,7 @@ class UserServiceIntegrationTest {
         assertThat(response.avatarUrl()).isEqualTo("new-avatar.png");
 
         // DB確認
-        User updated =
+        UserJpaEntity updated =
                 userRepository.findById(testUser.getId()).get();
 
         assertThat(updated.getDisplayName()).isEqualTo("New Name");
@@ -112,7 +113,7 @@ class UserServiceIntegrationTest {
 
         userService.updatePassword(testUser.getId(), request);
 
-        User updated =
+        UserJpaEntity updated =
                 userRepository.findById(testUser.getId()).get();
 
         assertThat(
@@ -130,7 +131,7 @@ class UserServiceIntegrationTest {
     void deleteUser_success() {
         userService.deleteUser(testUser.getId());
 
-        Optional<User> deleted =
+        Optional<UserJpaEntity> deleted =
                 userRepository.findById(testUser.getId());
 
         assertThat(deleted).isEmpty();

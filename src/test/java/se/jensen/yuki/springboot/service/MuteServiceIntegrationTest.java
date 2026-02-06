@@ -10,8 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.mute.MuteMutingResponse;
 import se.jensen.yuki.springboot.dto.mute.MuteResponse;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,15 +28,15 @@ class MuteServiceIntegrationTest {
     private UserRepository userRepository;
 
 
-    private User user1;
-    private User user2;
+    private UserJpaEntity user1;
+    private UserJpaEntity user2;
 
 
     @BeforeEach
     void setUp() {
 
         user1 = userRepository.save(
-                User.builder()
+                UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
                         .password("pass")
@@ -47,7 +47,7 @@ class MuteServiceIntegrationTest {
         );
 
         user2 = userRepository.save(
-                User.builder()
+                UserJpaEntity.builder()
                         .username("user2")
                         .email("user2@test.com")
                         .password("pass")
