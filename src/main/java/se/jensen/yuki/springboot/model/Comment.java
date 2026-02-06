@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 
 @Entity
 @Getter
@@ -24,7 +24,7 @@ public class Comment extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User author;
+    private UserJpaEntity author;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id", nullable = false)

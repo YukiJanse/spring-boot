@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.service.JwtService;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Long userId = jwtService.extractUserId(jwt);
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UnauthorizedException("User not found"));
+        UserJpaEntity user = userRepository.findById(userId).orElseThrow(() -> new UnauthorizedException("User not found"));
 
         SecurityUser securityUser = new SecurityUser(user);
         UsernamePasswordAuthenticationToken authToken =

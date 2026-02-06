@@ -4,22 +4,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AuthMapper {
     @Mapping(target = "role", constant = "USER")
     @Mapping(target = "displayName", source = "username")
     @Mapping(target = "bio", constant = "")
-    User registerDtoToUser(AuthRegisterRequestDTO dto);
+    UserJpaEntity registerDtoToUser(AuthRegisterRequestDTO dto);
 
 
 //    User loginDtoToUser(LoginDTO dto);
 //
-//    LoginDTO toLoginDTO(User user);
+//    LoginDTO toLoginDTO(UserJpaEntity user);
 
 //    User toUser(AuthRegisterRequestDTO requestDTO) {
-//        User user = new User();
+//        UserJpaEntity user = new User();
 //        user.setUsername(requestDTO.username());
 //        user.setEmail(requestDTO.email());
 //        user.setPassword(requestDTO.password());

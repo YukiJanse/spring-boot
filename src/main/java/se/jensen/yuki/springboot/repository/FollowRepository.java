@@ -72,7 +72,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
                 u.username,
                 u.displayName,
                 u.avatarUrl)
-                FROM User u
+                FROM UserJpaEntity u
                 WHERE u.id = :userId
             """)
     FollowResponse findByFollowerIdAndFollowedId(@Param("currentUserId") Long currentUserId, @Param("userId") Long userId);

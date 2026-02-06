@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 
 @Entity
 @Setter
@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private UserJpaEntity user;
 
     @ManyToOne
     @JoinColumn(name = "original_post_id")

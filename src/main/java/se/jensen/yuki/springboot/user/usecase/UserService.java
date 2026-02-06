@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 import se.jensen.yuki.springboot.user.mapper.UserMapper;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
@@ -52,9 +52,9 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         userMapper.FromUpdateProfileRequest(request, user);
-        User renewedUser = userRepository.save(user);
+        UserJpaEntity renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }
@@ -77,9 +77,9 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         userMapper.FromUpdateEmailRequest(request, user);
-        User renewedUser = userRepository.save(user);
+        UserJpaEntity renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }
@@ -91,9 +91,10 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         user.setPassword(passwordEncoder.encode(request.newPassword()));
-        User renewedUser = userRepository.save(user);
+//        userMapper.FromUpdatePasswordRequest(request, user);
+        UserJpaEntity renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }

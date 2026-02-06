@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
 
 @Entity
 @Setter
@@ -27,10 +27,10 @@ public class Follow extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "follower_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User follower;
+    private UserJpaEntity follower;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "followed_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User followed;
+    private UserJpaEntity followed;
 }
