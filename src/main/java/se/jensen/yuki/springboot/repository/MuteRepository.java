@@ -46,7 +46,7 @@ public interface MuteRepository extends JpaRepository<Mute, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO mutes (muting_id, muted_id, created_at) VALUES (:currentUserId, :targetUserId, CURRENT_TIMESTAMP)", nativeQuery = true)
+    @Query(value = "INSERT INTO mutes (muting_id, muted_id, created_at, updated_at) VALUES (:currentUserId, :targetUserId, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", nativeQuery = true)
     void createMuteRelationship(@Param("currentUserId") Long currentUserId, @Param("targetUserId") Long targetUserId);
 
     @Modifying
