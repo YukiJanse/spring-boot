@@ -46,11 +46,13 @@ public interface BlockRepository extends JpaRepository<Block, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO blocks (blocking_id, blocked_id, created_at) VALUES (:currentUserId, :targetUserId, CURRENT_TIMESTAMP)", nativeQuery = true)
+    @Query(value = "INSERT INTO blocks (blocking_id, blocked_id, created_at, updated_at) VALUES (:currentUserId, :targetUserId, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", nativeQuery = true)
     void createBlockRelationship(@Param("currentUserId") Long currentUserId, @Param("targetUserId") Long targetUserId);
 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM blocks WHERE blocking_id = :currentUserId AND blocked_id = :targetUserId", nativeQuery = true)
     void deleteBlockRelationship(@Param("currentUserId") Long currentUserId, @Param("targetUserId") Long targetUserId);
+
+    long countByBlockingIdAndBlockedId(Long id, Long id1);
 }
