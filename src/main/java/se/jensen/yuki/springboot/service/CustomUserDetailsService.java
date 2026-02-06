@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
 
     @Override
     public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserJpaEntity user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+        UserJpaEntity user = userQueryService.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
         return new SecurityUser(user);
     }
 }

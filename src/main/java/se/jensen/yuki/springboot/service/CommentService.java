@@ -17,7 +17,7 @@ import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 
 import java.time.Instant;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
     private final PostRepository postRepository;
     private final CommentMapper commentMapper;
 
@@ -37,7 +37,7 @@ public class CommentService {
         } else if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        UserJpaEntity author = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Author doesn't exist with id=" + userId));
+        UserJpaEntity author = userQueryService.findById(userId).orElseThrow(() -> new UserNotFoundException("Author doesn't exist with id=" + userId));
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post doesn't exist with id=" + postId));
         Comment comment;
         // If there is a parent comment

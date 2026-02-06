@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 import se.jensen.yuki.springboot.user.usecase.UserService;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
@@ -30,7 +30,7 @@ class UserServiceIntegrationTest {
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserQueryService userQueryService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,7 +49,7 @@ class UserServiceIntegrationTest {
                 .avatarUrl("avatar.png")
                 .build();
 
-        testUser = userRepository.save(testUser);
+        testUser = userQueryService.save(testUser);
     }
 
     // ----------------------------
@@ -98,7 +98,7 @@ class UserServiceIntegrationTest {
 
         // DB確認
         UserJpaEntity updated =
-                userRepository.findById(testUser.getId()).get();
+                userQueryService.findById(testUser.getId()).get();
 
         assertThat(updated.getDisplayName()).isEqualTo("New Name");
     }
@@ -114,7 +114,7 @@ class UserServiceIntegrationTest {
         userService.updatePassword(testUser.getId(), request);
 
         UserJpaEntity updated =
-                userRepository.findById(testUser.getId()).get();
+                userQueryService.findById(testUser.getId()).get();
 
         assertThat(
                 passwordEncoder.matches(
@@ -132,7 +132,7 @@ class UserServiceIntegrationTest {
         userService.deleteUser(testUser.getId());
 
         Optional<UserJpaEntity> deleted =
-                userRepository.findById(testUser.getId());
+                userQueryService.findById(testUser.getId());
 
         assertThat(deleted).isEmpty();
     }

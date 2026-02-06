@@ -17,15 +17,16 @@ import se.jensen.yuki.springboot.repository.CommentLikeRepository;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostLikeRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
 public class LikeService {
     private final PostLikeRepository postLikeRepository;
-    private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
@@ -37,7 +38,7 @@ public class LikeService {
         } else {
             PostLike postLike = new PostLike();
             postLike.setPost(postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found")));
-            postLike.setUser(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
+            postLike.setUser(userQueryService.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
             postLikeRepository.save(postLike);
             return new LikeResponse(true, postLikeRepository.countByPostId(postId));
         }
@@ -70,7 +71,7 @@ public class LikeService {
         } else {
             CommentLike cl = new CommentLike();
             cl.setComment(commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment not found")));
-            cl.setUser(userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
+            cl.setUser(userQueryService.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
             commentLikeRepository.save(cl);
             return new LikeResponse(true, commentLikeRepository.countByCommentId(commentId));
         }

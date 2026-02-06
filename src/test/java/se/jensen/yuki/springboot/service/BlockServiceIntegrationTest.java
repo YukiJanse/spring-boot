@@ -12,7 +12,7 @@ import se.jensen.yuki.springboot.dto.block.BlockBlockingResponse;
 import se.jensen.yuki.springboot.dto.block.BlockResponse;
 import se.jensen.yuki.springboot.repository.BlockRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +25,7 @@ class BlockServiceIntegrationTest {
     private BlockService blockService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserQueryService userQueryService;
 
     @Autowired
     private BlockRepository blockRepository;
@@ -36,7 +36,7 @@ class BlockServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        userA = userRepository.save(
+        userA = userQueryService.save(
                 UserJpaEntity.builder()
                         .username("userA")
                         .email("a@test.com")
@@ -47,7 +47,7 @@ class BlockServiceIntegrationTest {
                         .build()
         );
 
-        userB = userRepository.save(
+        userB = userQueryService.save(
                 UserJpaEntity.builder()
                         .username("userB")
                         .email("b@test.com")
@@ -151,7 +151,7 @@ class BlockServiceIntegrationTest {
         assertThat(slice.getContent()).hasSize(1);
 
         BlockBlockingResponse res =
-                slice.getContent().get(0);
+                slice.getContent().getFirst();
 
         assertThat(res.blockedUserId()).isEqualTo(userB.getId());
     }

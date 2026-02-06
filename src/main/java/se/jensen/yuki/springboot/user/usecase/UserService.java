@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 import se.jensen.yuki.springboot.user.mapper.UserMapper;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
@@ -23,12 +22,12 @@ import java.util.List;
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserMapper userMapper;
-    private final UserRepository userRepository;
+    private final UserQueryService UserQueryService;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserProfileResponse> getAllUsers() {
         log.info("Starting to get all users");
-        return userRepository.findAll()
+        return UserQueryService.findAll()
                 .stream()
                 .map(userMapper::toResponse)
                 .toList();
@@ -40,7 +39,7 @@ public class UserService {
             log.warn("Tried to get a user with invalid ID={}", id);
             throw new IllegalArgumentException("Invalid ID");
         }
-        return userRepository.findById(id)
+        return UserQueryService.findById(id)
                 .map(userMapper::toResponse)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
@@ -52,9 +51,9 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = UserQueryService.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         userMapper.FromUpdateProfileRequest(request, user);
-        UserJpaEntity renewedUser = userRepository.save(user);
+        UserJpaEntity renewedUser = UserQueryService.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }
@@ -65,7 +64,7 @@ public class UserService {
             log.warn("Tried to delete a user with invalid ID={}", id);
             throw new IllegalArgumentException("No users found");
         }
-        userRepository.deleteById(id);
+        UserQueryService.deleteById(id);
         log.info("Deleted a user successfully by ID={}", id);
     }
 
@@ -77,9 +76,9 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = UserQueryService.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         userMapper.FromUpdateEmailRequest(request, user);
-        UserJpaEntity renewedUser = userRepository.save(user);
+        UserJpaEntity renewedUser = UserQueryService.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }
@@ -91,10 +90,10 @@ public class UserService {
             throw new IllegalArgumentException("Invalid ID");
         }
 
-        UserJpaEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
+        UserJpaEntity user = UserQueryService.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         user.setPassword(passwordEncoder.encode(request.newPassword()));
 //        userMapper.FromUpdatePasswordRequest(request, user);
-        UserJpaEntity renewedUser = userRepository.save(user);
+        UserJpaEntity renewedUser = UserQueryService.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
     }

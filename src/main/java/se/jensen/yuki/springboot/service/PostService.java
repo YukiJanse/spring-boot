@@ -19,21 +19,22 @@ import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.PostRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 
 import java.util.List;
+
 
 @Service
 public class PostService {
     private final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostMapper postMapper;
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
 
-    public PostService(PostMapper postMapper, PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostMapper postMapper, PostRepository postRepository, UserQueryService userQueryService) {
         this.postMapper = postMapper;
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
+        this.userQueryService = userQueryService;
     }
 
     /**
@@ -61,7 +62,7 @@ public class PostService {
 
     public PostFeedResponse addPost(Long userId, PostCreateRequest requestDTO) {
         log.info("Starting to add a post");
-        UserJpaEntity author = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("The post's author doesn't exist"));
+        UserJpaEntity author = userQueryService.findById(userId).orElseThrow(() -> new UserNotFoundException("The post's author doesn't exist"));
         Post post = postMapper.PostCreateToPost(requestDTO, author);
         postRepository.save(post);
         log.info("Added a post successfully");
@@ -80,7 +81,7 @@ public class PostService {
             throw new IllegalArgumentException("Invalid User ID");
         }
 
-        UserJpaEntity author = userRepository
+        UserJpaEntity author = userQueryService
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("The request author doesn't exist"));
         Post currentPost = postRepository

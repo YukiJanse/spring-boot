@@ -18,7 +18,7 @@ import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostLikeRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.usecase.UserQueryService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +31,7 @@ class LikeServiceIntegrationTest {
     private LikeService likeService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserQueryService userQueryService;
 
     @Autowired
     private PostRepository postRepository;
@@ -52,7 +52,7 @@ class LikeServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        user = userRepository.save(
+        user = userQueryService.save(
                 UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
@@ -215,7 +215,7 @@ class LikeServiceIntegrationTest {
         assertThat(slice.getContent()).hasSize(1);
 
         CommentLikeResponse res =
-                slice.getContent().get(0);
+                slice.getContent().getFirst();
 
         assertThat(res.userId()).isEqualTo(user.getId());
     }
