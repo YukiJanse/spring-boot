@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.service;
+package se.jensen.yuki.springboot.user.usecase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,14 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.dto.user.UserProfileResponse;
-import se.jensen.yuki.springboot.dto.user.UserUpdateEmailRequest;
-import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
-import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.mapper.UserMapper;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
+import se.jensen.yuki.springboot.user.mapper.UserMapper;
+import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
 import java.util.List;
 

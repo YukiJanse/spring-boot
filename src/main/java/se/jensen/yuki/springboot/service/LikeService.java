@@ -13,7 +13,11 @@ import se.jensen.yuki.springboot.dto.like.LikeResponse;
 import se.jensen.yuki.springboot.dto.like.PostLikeResponse;
 import se.jensen.yuki.springboot.model.CommentLike;
 import se.jensen.yuki.springboot.model.PostLike;
-import se.jensen.yuki.springboot.repository.*;
+import se.jensen.yuki.springboot.repository.CommentLikeRepository;
+import se.jensen.yuki.springboot.repository.CommentRepository;
+import se.jensen.yuki.springboot.repository.PostLikeRepository;
+import se.jensen.yuki.springboot.repository.PostRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 import java.util.Optional;
 

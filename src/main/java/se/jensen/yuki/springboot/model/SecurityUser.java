@@ -4,6 +4,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
 
 import java.util.Collection;
 import java.util.List;

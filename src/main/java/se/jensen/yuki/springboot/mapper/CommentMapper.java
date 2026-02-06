@@ -10,7 +10,7 @@ import se.jensen.yuki.springboot.dto.comment.CommentReplyResponse;
 import se.jensen.yuki.springboot.dto.comment.CommentUpdateResponse;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentMapper {

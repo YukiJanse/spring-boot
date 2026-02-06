@@ -17,9 +17,9 @@ import se.jensen.yuki.springboot.exception.PostNotFoundException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 import java.util.List;
 

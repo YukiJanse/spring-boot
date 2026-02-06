@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
-import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AuthMapper {

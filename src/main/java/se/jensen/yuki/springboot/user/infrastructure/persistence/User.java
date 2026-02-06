@@ -1,7 +1,9 @@
-package se.jensen.yuki.springboot.model;
+package se.jensen.yuki.springboot.user.infrastructure.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
+import se.jensen.yuki.springboot.model.BaseEntity;
+import se.jensen.yuki.springboot.model.Post;
 
 import java.util.List;
 

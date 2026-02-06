@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.model.SecurityUser;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 @Service
 @RequiredArgsConstructor

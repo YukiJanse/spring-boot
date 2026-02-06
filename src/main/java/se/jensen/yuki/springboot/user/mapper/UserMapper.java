@@ -1,12 +1,12 @@
-package se.jensen.yuki.springboot.mapper;
+package se.jensen.yuki.springboot.user.mapper;
 
 import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import se.jensen.yuki.springboot.dto.user.*;
-import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
+import se.jensen.yuki.springboot.user.web.dto.*;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {

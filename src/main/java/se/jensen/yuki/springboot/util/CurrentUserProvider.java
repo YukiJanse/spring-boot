@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserRepository;
 
 @Component
 @RequiredArgsConstructor

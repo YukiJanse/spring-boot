@@ -2,6 +2,7 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.User;
 
 import java.time.Instant;
 

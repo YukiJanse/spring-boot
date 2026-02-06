@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.controller;
+package se.jensen.yuki.springboot.user.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.jensen.yuki.springboot.dto.user.UserProfileResponse;
-import se.jensen.yuki.springboot.dto.user.UserUpdateEmailRequest;
-import se.jensen.yuki.springboot.dto.user.UserUpdatePasswordRequest;
-import se.jensen.yuki.springboot.dto.user.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.service.AuthService;
-import se.jensen.yuki.springboot.service.UserService;
+import se.jensen.yuki.springboot.user.usecase.UserService;
+import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
 import java.util.List;
 

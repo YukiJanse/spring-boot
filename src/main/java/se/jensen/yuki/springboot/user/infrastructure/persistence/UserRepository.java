@@ -1,7 +1,6 @@
-package se.jensen.yuki.springboot.repository;
+package se.jensen.yuki.springboot.user.infrastructure.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import se.jensen.yuki.springboot.model.User;
 
 import java.util.Optional;
 
