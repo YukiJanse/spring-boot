@@ -93,7 +93,6 @@ public class UserService {
 
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
         user.setPassword(passwordEncoder.encode(request.newPassword()));
-//        userMapper.FromUpdatePasswordRequest(request, user);
         User renewedUser = userRepository.save(user);
         log.info("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(renewedUser);
