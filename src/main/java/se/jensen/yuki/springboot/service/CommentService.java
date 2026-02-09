@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.dto.comment.*;
 import se.jensen.yuki.springboot.exception.CommentNotFoundException;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.CommentMapper;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
@@ -37,7 +36,7 @@ public class CommentService {
         } else if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        UserJpaEntity author = userQueryService.findById(userId).orElseThrow(() -> new UserNotFoundException("Author doesn't exist with id=" + userId));
+        UserJpaEntity author = userQueryService.findById(userId);
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post doesn't exist with id=" + postId));
         Comment comment;
         // If there is a parent comment

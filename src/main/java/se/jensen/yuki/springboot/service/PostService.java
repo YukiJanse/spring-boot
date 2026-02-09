@@ -14,7 +14,6 @@ import se.jensen.yuki.springboot.dto.post.PostCreateRequest;
 import se.jensen.yuki.springboot.dto.post.PostCreateResponse;
 import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.PostRepository;
@@ -62,7 +61,7 @@ public class PostService {
 
     public PostFeedResponse addPost(Long userId, PostCreateRequest requestDTO) {
         log.info("Starting to add a post");
-        UserJpaEntity author = userQueryService.findById(userId).orElseThrow(() -> new UserNotFoundException("The post's author doesn't exist"));
+        UserJpaEntity author = userQueryService.findById(userId);
         Post post = postMapper.PostCreateToPost(requestDTO, author);
         postRepository.save(post);
         log.info("Added a post successfully");
@@ -81,9 +80,7 @@ public class PostService {
             throw new IllegalArgumentException("Invalid User ID");
         }
 
-        UserJpaEntity author = userQueryService
-                .findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("The request author doesn't exist"));
+        UserJpaEntity author = userQueryService.findById(userId);
         Post currentPost = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post found with id= " + postId));

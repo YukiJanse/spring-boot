@@ -15,8 +15,6 @@ public class CurrentUserProvider {
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        return UserQueryService.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"))
-                .getId();
+        return UserQueryService.findByEmail(email).getId();
     }
 }

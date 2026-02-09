@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.service.JwtService;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
@@ -45,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Long userId = jwtService.extractUserId(jwt);
 
-        UserJpaEntity user = UserQueryService.findById(userId).orElseThrow(() -> new UnauthorizedException("User not found"));
+        UserJpaEntity user = UserQueryService.findById(userId);
 
         SecurityUser securityUser = new SecurityUser(user);
         UsernamePasswordAuthenticationToken authToken =

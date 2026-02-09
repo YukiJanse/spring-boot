@@ -38,7 +38,7 @@ public class LikeService {
         } else {
             PostLike postLike = new PostLike();
             postLike.setPost(postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found")));
-            postLike.setUser(userQueryService.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
+            postLike.setUser(userQueryService.findById(userId));
             postLikeRepository.save(postLike);
             return new LikeResponse(true, postLikeRepository.countByPostId(postId));
         }
@@ -71,7 +71,7 @@ public class LikeService {
         } else {
             CommentLike cl = new CommentLike();
             cl.setComment(commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment not found")));
-            cl.setUser(userQueryService.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")));
+            cl.setUser(userQueryService.findById(userId));
             commentLikeRepository.save(cl);
             return new LikeResponse(true, commentLikeRepository.countByCommentId(commentId));
         }
