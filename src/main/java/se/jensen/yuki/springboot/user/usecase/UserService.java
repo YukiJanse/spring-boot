@@ -14,7 +14,6 @@ import se.jensen.yuki.springboot.user.mapper.UserMapper;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
-import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
 import java.util.List;
 
@@ -43,20 +42,6 @@ public class UserService {
         return userJpaRepository.findById(id)
                 .map(userMapper::toResponse)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-    }
-
-    public UserProfileResponse updateProfile(Long id, UserUpdateProfileRequest request) {
-        log.info("Starting to update a user with ID={}", id);
-        if (id == null || id < 0) {
-            log.warn("Tried to update a user with invalid ID={}", id);
-            throw new IllegalArgumentException("Invalid ID");
-        }
-
-        UserJpaEntity user = userJpaRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user found"));
-        userMapper.FromUpdateProfileRequest(request, user);
-        UserJpaEntity renewedUser = userJpaRepository.save(user);
-        log.info("Updated a user successfully with ID={}", id);
-        return userMapper.toResponse(renewedUser);
     }
 
     public void deleteUser(Long id) {
