@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.follow.FollowResponse;
 import se.jensen.yuki.springboot.repository.FollowRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +21,7 @@ public class FollowServiceIntegrationTest {
     private FollowService followService;
 
     @Autowired
-    private UserQueryService userQueryService;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private FollowRepository followRepository;
@@ -35,9 +35,9 @@ public class FollowServiceIntegrationTest {
     void setup() {
 
         followRepository.deleteAll();
-        userQueryService.deleteAll();
+        userJpaRepository.deleteAll();
 
-        userA = userQueryService.save(
+        userA = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("userA")
                         .email("a@test.com")
@@ -48,7 +48,7 @@ public class FollowServiceIntegrationTest {
                         .build()
         );
 
-        userB = userQueryService.save(
+        userB = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("userB")
                         .email("b@test.com")

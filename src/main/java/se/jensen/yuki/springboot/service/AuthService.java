@@ -17,7 +17,7 @@ import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserQueryService userQueryService;
+    private final UserJpaRepository userJpaRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -89,7 +89,7 @@ public class AuthService {
                 .role("USER")
                 .build();
 
-        UserJpaEntity registeredUser = userQueryService.save(user);
+        UserJpaEntity registeredUser = userJpaRepository.save(user);
         String access = jwtService.generateAccessToken(registeredUser.getId());
         RefreshToken rt = createRefreshToken(registeredUser);
 
@@ -102,7 +102,7 @@ public class AuthService {
         );
 
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        UserJpaEntity user = userQueryService.findById(securityUser.getId())
+        UserJpaEntity user = userJpaRepository.findById(securityUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("No user found"));
         String access = jwtService.generateAccessToken(securityUser.getId());
         RefreshToken rt = createRefreshToken(user);
@@ -128,7 +128,7 @@ public class AuthService {
 
     public void checkCurrentPassword(String currentPassword) {
         Long userId = getCurrentUserId();
-        UserJpaEntity currentUser = userQueryService.findById(userId)
+        UserJpaEntity currentUser = userJpaRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("No user found"));
         if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
             throw new BadCredentialsException("Wrong password");

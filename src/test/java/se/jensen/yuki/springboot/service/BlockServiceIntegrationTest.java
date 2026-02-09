@@ -12,7 +12,7 @@ import se.jensen.yuki.springboot.dto.block.BlockBlockingResponse;
 import se.jensen.yuki.springboot.dto.block.BlockResponse;
 import se.jensen.yuki.springboot.repository.BlockRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +25,7 @@ class BlockServiceIntegrationTest {
     private BlockService blockService;
 
     @Autowired
-    private UserQueryService userQueryService;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private BlockRepository blockRepository;
@@ -36,7 +36,7 @@ class BlockServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        userA = userQueryService.save(
+        userA = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("userA")
                         .email("a@test.com")
@@ -47,7 +47,7 @@ class BlockServiceIntegrationTest {
                         .build()
         );
 
-        userB = userQueryService.save(
+        userB = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("userB")
                         .email("b@test.com")

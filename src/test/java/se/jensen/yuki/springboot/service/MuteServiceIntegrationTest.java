@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.mute.MuteMutingResponse;
 import se.jensen.yuki.springboot.dto.mute.MuteResponse;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +25,7 @@ class MuteServiceIntegrationTest {
     private MuteService muteService;
 
     @Autowired
-    private UserQueryService userQueryService;
+    private UserJpaRepository userJpaRepository;
 
 
     private UserJpaEntity user1;
@@ -35,7 +35,7 @@ class MuteServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        user1 = userQueryService.save(
+        user1 = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
@@ -46,7 +46,7 @@ class MuteServiceIntegrationTest {
                         .build()
         );
 
-        user2 = userQueryService.save(
+        user2 = userJpaRepository.save(
                 UserJpaEntity.builder()
                         .username("user2")
                         .email("user2@test.com")

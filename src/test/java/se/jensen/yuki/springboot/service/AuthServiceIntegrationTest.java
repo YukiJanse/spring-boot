@@ -12,7 +12,7 @@ import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class AuthServiceIntegrationTest {
     private AuthService authService;
 
     @Autowired
-    private UserQueryService userQueryService;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -38,7 +38,7 @@ public class AuthServiceIntegrationTest {
     @BeforeEach
     void clean() {
         refreshTokenRepository.deleteAll();
-        userQueryService.deleteAll();
+        userJpaRepository.deleteAll();
     }
 
     // ---------- register ----------
@@ -62,7 +62,7 @@ public class AuthServiceIntegrationTest {
         assertThat(tokenPair.refreshToken()).isNotBlank();
 
         // user保存されてる
-        UserJpaEntity user = userQueryService
+        UserJpaEntity user = userJpaRepository
                 .findByEmail("test@test.com")
                 .orElseThrow();
 
@@ -94,7 +94,7 @@ public class AuthServiceIntegrationTest {
                 .bio("bio")
                 .build();
 
-        userQueryService.save(user);
+        userJpaRepository.save(user);
 
         LoginDTO dto =
                 new LoginDTO("login@test.com", "secret");
@@ -122,7 +122,7 @@ public class AuthServiceIntegrationTest {
                 .bio("bio")
                 .build();
 
-        userQueryService.save(user);
+        userJpaRepository.save(user);
 
         // 最初のtoken
         RefreshToken rt =

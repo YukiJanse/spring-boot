@@ -21,19 +21,7 @@ public class UserQueryService {
         return userJpaRepository.findById(id);
     }
 
-    public UserJpaEntity save(UserJpaEntity user) {
-        return userJpaRepository.save(user);
-    }
-
-    public void deleteById(Long id) {
-        userJpaRepository.deleteById(id);
-    }
-
     public Optional<UserJpaEntity> findByEmail(String email) {
         return userJpaRepository.findByEmail(email);
-    }
-
-    public void deleteAll() {
-        userJpaRepository.deleteAll();
     }
 }

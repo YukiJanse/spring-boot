@@ -12,7 +12,7 @@ import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +26,7 @@ class PostServiceIntegrationTest {
     private PostService postService;
 
     @Autowired
-    private UserQueryService userQueryService;
+    private UserJpaRepository userJpaRepository;
 
     private UserJpaEntity testUser;
 
@@ -43,7 +43,7 @@ class PostServiceIntegrationTest {
                 .avatarUrl(null)
                 .build();
 
-        testUser = userQueryService.save(testUser);
+        testUser = userJpaRepository.save(testUser);
     }
 
     /**
