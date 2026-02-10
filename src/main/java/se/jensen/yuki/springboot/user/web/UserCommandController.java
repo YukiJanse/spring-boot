@@ -6,54 +6,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.jensen.yuki.springboot.service.AuthService;
-import se.jensen.yuki.springboot.user.usecase.*;
+import se.jensen.yuki.springboot.user.usecase.command.DeleteUserUseCase;
+import se.jensen.yuki.springboot.user.usecase.command.UpdateEmailUseCase;
+import se.jensen.yuki.springboot.user.usecase.command.UpdatePasswordUseCase;
+import se.jensen.yuki.springboot.user.usecase.command.UpdateUserProfileUseCase;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserController {
-    private final UserService userService;
+public class UserCommandController {
     private final AuthService authService;
     private final UpdateUserProfileUseCase updateUserProfileUseCase;
-    private final GetAllUsersUseCase getAllUsersUseCase;
-    private final GetUserProfileByIdUseCase getUserProfileByIdUseCase;
     private final UpdatePasswordUseCase updatePasswordUseCase;
     private final UpdateEmailUseCase updateEmailUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
 
-    @GetMapping("/admin/users")
-    public ResponseEntity<List<UserProfileResponse>> getAllUsers() {
-        log.debug("Starting to get all users");
-
-        List<UserProfileResponse> response = getAllUsersUseCase.execute();
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<UserProfileResponse> getMyProfile() {
-        log.debug("Starting to get my profile");
-
-        UserProfileResponse response = getUserProfileByIdUseCase.execute(authService.getCurrentUserId());
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable Long id) {
-        log.debug("Starting to get a user by ID={}", id);
-
-        UserProfileResponse response = getUserProfileByIdUseCase.execute(id);
-
-        return ResponseEntity.ok(response);
-    }
 
     @PutMapping("/me/profile")
     public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UserUpdateProfileRequest request) {

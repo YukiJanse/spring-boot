@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.user.usecase;
+package se.jensen.yuki.springboot.user.usecase.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

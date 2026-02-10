@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.user.usecase;
+package se.jensen.yuki.springboot.user.usecase.query;
 
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 
