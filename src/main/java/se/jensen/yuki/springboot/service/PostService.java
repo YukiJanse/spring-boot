@@ -1,5 +1,6 @@
 package se.jensen.yuki.springboot.service;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,23 +19,18 @@ import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.PostRepository;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostMapper postMapper;
     private final PostRepository postRepository;
-    private final UserQueryService userQueryService;
-
-    public PostService(PostMapper postMapper, PostRepository postRepository, UserQueryService userQueryService) {
-        this.postMapper = postMapper;
-        this.postRepository = postRepository;
-        this.userQueryService = userQueryService;
-    }
+    private final UserLoadService userLoadService;
 
     /**
      * MUST MODIFY RETURN TYPE
@@ -61,7 +57,7 @@ public class PostService {
 
     public PostFeedResponse addPost(Long userId, PostCreateRequest requestDTO) {
         log.info("Starting to add a post");
-        UserJpaEntity author = userQueryService.findById(userId);
+        UserJpaEntity author = userLoadService.loadById(userId);
         Post post = postMapper.PostCreateToPost(requestDTO, author);
         postRepository.save(post);
         log.info("Added a post successfully");
@@ -80,7 +76,7 @@ public class PostService {
             throw new IllegalArgumentException("Invalid User ID");
         }
 
-        UserJpaEntity author = userQueryService.findById(userId);
+        UserJpaEntity author = userLoadService.loadById(userId);
         Post currentPost = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post found with id= " + postId));

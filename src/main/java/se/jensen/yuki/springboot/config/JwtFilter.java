@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.service.JwtService;
 import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserQueryService UserQueryService;
+    private final UserLoadService userLoadService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Long userId = jwtService.extractUserId(jwt);
 
-        UserJpaEntity user = UserQueryService.findById(userId);
+        UserJpaEntity user = userLoadService.loadById(userId);
 
         SecurityUser securityUser = new SecurityUser(user);
         UsernamePasswordAuthenticationToken authToken =

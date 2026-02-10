@@ -17,7 +17,7 @@ import se.jensen.yuki.springboot.repository.CommentLikeRepository;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostLikeRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.user.usecase.UserQueryService;
+import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
     private final PostLikeRepository postLikeRepository;
-    private final UserQueryService userQueryService;
+    private final UserLoadService userLoadService;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
@@ -38,7 +38,7 @@ public class LikeService {
         } else {
             PostLike postLike = new PostLike();
             postLike.setPost(postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found")));
-            postLike.setUser(userQueryService.findById(userId));
+            postLike.setUser(userLoadService.loadById(userId));
             postLikeRepository.save(postLike);
             return new LikeResponse(true, postLikeRepository.countByPostId(postId));
         }
@@ -71,7 +71,7 @@ public class LikeService {
         } else {
             CommentLike cl = new CommentLike();
             cl.setComment(commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment not found")));
-            cl.setUser(userQueryService.findById(userId));
+            cl.setUser(userLoadService.loadById(userId));
             commentLikeRepository.save(cl);
             return new LikeResponse(true, commentLikeRepository.countByCommentId(commentId));
         }
