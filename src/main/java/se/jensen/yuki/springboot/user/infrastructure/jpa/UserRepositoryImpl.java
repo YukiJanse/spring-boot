@@ -23,7 +23,17 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        userJpaRepository.save(userJpaMapper.toEntity(user));
+        UserJpaEntity entity;
+        if (user.getId() == null) {
+            entity = new UserJpaEntity();
+            userJpaMapper.toEntity(user, entity);
+        } else {
+            entity = userJpaRepository.findById(user.getId())
+                    .orElseThrow(() -> new UserNotFoundException("No user found with ID=" + user.getId()));
+            userJpaMapper.toEntity(user, entity);
+        }
+
+        userJpaRepository.save(entity);
     }
 
     @Override

@@ -23,6 +23,10 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
+    public static User reconstruct(Long id, String username, String email, String password, String role, String displayName, String bio, String avatarUrl) {
+        return new User(id, username, email, password, role, displayName, bio, avatarUrl);
+    }
+
     public Long getId() {
         return id;
     }

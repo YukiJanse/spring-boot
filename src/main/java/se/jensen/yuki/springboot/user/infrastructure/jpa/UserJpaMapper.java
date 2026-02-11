@@ -5,21 +5,18 @@ import se.jensen.yuki.springboot.user.domain.User;
 
 @Component
 public class UserJpaMapper {
-    public UserJpaEntity toEntity(User user) {
-        return UserJpaEntity.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .role(user.getRole())
-                .displayName(user.getDisplayName())
-                .bio(user.getBio())
-                .avatarUrl(user.getAvatarUrl())
-                .build();
+    public void toEntity(User user, UserJpaEntity entity) {
+        entity.setUsername(user.getUsername());
+        entity.setEmail(user.getEmail());
+        entity.setPassword(user.getPassword());
+        entity.setRole(user.getRole());
+        entity.setDisplayName(user.getDisplayName());
+        entity.setBio(user.getBio());
+        entity.setAvatarUrl(user.getAvatarUrl());
     }
 
     public User toDomain(UserJpaEntity user) {
-        return new User(
+        return User.reconstruct(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
