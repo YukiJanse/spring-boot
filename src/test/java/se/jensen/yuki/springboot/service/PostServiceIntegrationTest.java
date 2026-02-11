@@ -11,8 +11,8 @@ import se.jensen.yuki.springboot.dto.post.PostCreateRequest;
 import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

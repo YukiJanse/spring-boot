@@ -17,8 +17,8 @@ import se.jensen.yuki.springboot.repository.CommentLikeRepository;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostLikeRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

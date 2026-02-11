@@ -4,28 +4,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
-import se.jensen.yuki.springboot.user.mapper.UserMapper;
+import se.jensen.yuki.springboot.user.domain.User;
+import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
+import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UpdateUserProfileUseCase {
-    private final UserJpaRepository userJpaRepository;
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserResponseMapper userMapper;
 
     @Transactional
     public UserProfileResponse execute(Long id, UserUpdateProfileRequest request) {
         log.debug("Starting to update a user with ID={}", id);
 
-        UserJpaEntity user = userJpaRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("No user found"));
+        User user = userRepository.findById(id);
 
-        userMapper.FromUpdateProfileRequest(request, user);
+        user.updateProfile(request.displayName(), request.bio(), request.avatarUrl());
+
+        userRepository.save(user);
 
         log.debug("Updated a user successfully with ID={}", id);
         return userMapper.toResponse(user);

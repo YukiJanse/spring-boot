@@ -8,8 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.follow.FollowResponse;
 import se.jensen.yuki.springboot.repository.FollowRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -18,7 +18,7 @@ import se.jensen.yuki.springboot.exception.PostNotFoundException;
 import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class PostService {
     private final UserLoadService userLoadService;
 
     /**
-     * MUST MODIFY RETURN TYPE
+     * TODO: MUST MODIFY RETURN TYPE
      *
      * @return
      */

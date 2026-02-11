@@ -3,8 +3,8 @@ package se.jensen.yuki.springboot.user.usecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 @Service
 @RequiredArgsConstructor

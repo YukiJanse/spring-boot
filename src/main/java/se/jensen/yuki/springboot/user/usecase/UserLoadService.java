@@ -1,6 +1,6 @@
 package se.jensen.yuki.springboot.user.usecase;
 
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 /**
  * Temporary Service for migration

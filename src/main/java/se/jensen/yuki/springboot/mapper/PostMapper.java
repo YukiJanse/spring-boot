@@ -7,7 +7,7 @@ import se.jensen.yuki.springboot.dto.post.PostCreateRequest;
 import se.jensen.yuki.springboot.dto.post.PostCreateResponse;
 import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostMapper {

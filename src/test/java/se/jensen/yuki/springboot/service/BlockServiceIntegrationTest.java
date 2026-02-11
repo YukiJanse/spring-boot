@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.block.BlockBlockingResponse;
 import se.jensen.yuki.springboot.dto.block.BlockResponse;
 import se.jensen.yuki.springboot.repository.BlockRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

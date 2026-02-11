@@ -2,22 +2,21 @@ package se.jensen.yuki.springboot.user.usecase.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
-import se.jensen.yuki.springboot.user.mapper.UserMapper;
+import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
+import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserQueryServiceImpl implements UserQueryService {
-    private final UserJpaRepository userJpaRepository;
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserResponseMapper userMapper;
 
     @Override
     public List<UserProfileResponse> findAll() {
-        return userJpaRepository.findAll()
+        return userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponse)
                 .toList();
@@ -25,9 +24,7 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public UserProfileResponse findById(Long id) {
-        return userJpaRepository.findById(id)
-                .map(userMapper::toResponse)
-                .orElseThrow(() -> new UserNotFoundException("User not found by id " + id));
+        return userMapper.toResponse(userRepository.findById(id));
     }
 
 }

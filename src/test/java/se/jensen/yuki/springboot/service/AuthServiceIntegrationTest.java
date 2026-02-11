@@ -11,8 +11,8 @@ import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
 import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import java.util.Optional;
 

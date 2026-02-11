@@ -15,7 +15,7 @@ import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.time.Instant;

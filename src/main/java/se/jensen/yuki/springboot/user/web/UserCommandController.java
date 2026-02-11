@@ -40,8 +40,6 @@ public class UserCommandController {
     public ResponseEntity<Void> updateEmail(@Valid @RequestBody UserUpdateEmailRequest request) {
         log.debug("Stating to update my Account");
 
-        authService.checkCurrentPassword(request.currentPassword());
-
         updateEmailUseCase.execute(authService.getCurrentUserId(), request);
 
         return ResponseEntity
@@ -52,8 +50,6 @@ public class UserCommandController {
     @PutMapping("/me/password")
     public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request) {
         log.debug("Stating to update my Account");
-
-        authService.checkCurrentPassword(request.currentPassword());
 
         updatePasswordUseCase.execute(authService.getCurrentUserId(), request);
 

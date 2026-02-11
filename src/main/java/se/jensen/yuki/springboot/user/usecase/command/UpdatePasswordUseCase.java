@@ -6,26 +6,34 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.domain.User;
+import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UpdatePasswordUseCase {
-    private final UserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void execute(Long id, @Valid UserUpdatePasswordRequest request) {
         log.debug("Starting to update a user with ID={}", id);
 
-        UserJpaEntity user = userJpaRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("No user found"));
+        User user = userRepository.findById(id);
 
-        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("New password must be different from the current password");
+        }
+
+        user.changePassword(passwordEncoder.encode(request.newPassword()));
+
+        userRepository.save(user);
 
         log.debug("Updated a user successfully with ID={}", id);
     }

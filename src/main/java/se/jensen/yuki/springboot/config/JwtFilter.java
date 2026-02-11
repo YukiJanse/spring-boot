@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.service.JwtService;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.io.IOException;

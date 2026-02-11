@@ -16,8 +16,8 @@ import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.model.SecurityUser;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaEntity;
-import se.jensen.yuki.springboot.user.infrastructure.persistence.UserJpaRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import java.time.Instant;
 import java.util.Optional;

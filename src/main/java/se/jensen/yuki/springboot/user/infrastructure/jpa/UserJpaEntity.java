@@ -1,4 +1,4 @@
-package se.jensen.yuki.springboot.user.infrastructure.persistence;
+package se.jensen.yuki.springboot.user.infrastructure.jpa;
 
 import jakarta.persistence.*;
 import lombok.*;
