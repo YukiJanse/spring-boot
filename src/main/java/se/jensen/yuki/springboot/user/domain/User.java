@@ -1,18 +1,18 @@
 package se.jensen.yuki.springboot.user.domain;
 
-import java.util.Objects;
+import se.jensen.yuki.springboot.user.domain.vo.Email;
 
 public class User {
     private final Long id;
     private String username;
-    private String email;
+    private Email email;
     private String password;
     private String role;
     private String displayName;
     private String bio;
     private String avatarUrl;
 
-    public User(Long id, String username, String email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public User(Long id, String username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -23,7 +23,7 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public static User reconstruct(Long id, String username, String email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public static User reconstruct(Long id, String username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 
@@ -36,7 +36,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return email.getValue();
     }
 
     public String getPassword() {
@@ -59,8 +59,8 @@ public class User {
         return avatarUrl;
     }
 
-    public void changeEmail(String newEmail) {
-        if (Objects.equals(this.email, newEmail)) {
+    public void changeEmail(Email newEmail) {
+        if (this.email.equals(newEmail)) {
             throw new IllegalArgumentException("New email must be different from the current email.");
         }
         this.email = newEmail;

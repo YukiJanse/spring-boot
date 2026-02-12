@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.Email;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 
 @Slf4j
@@ -26,7 +27,9 @@ public class UpdateEmailUseCase {
             throw new IllegalArgumentException("Current password is incorrect");
         }
 
-        user.changeEmail(request.email());
+        Email newEmail = new Email(request.email());
+
+        user.changeEmail(newEmail);
 
         userRepository.save(user);
 
