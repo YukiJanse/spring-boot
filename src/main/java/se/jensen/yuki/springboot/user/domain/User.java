@@ -1,10 +1,11 @@
 package se.jensen.yuki.springboot.user.domain;
 
 import se.jensen.yuki.springboot.user.domain.vo.Email;
+import se.jensen.yuki.springboot.user.domain.vo.Username;
 
 public class User {
     private final Long id;
-    private String username;
+    private Username username;
     private Email email;
     private String password;
     private String role;
@@ -12,7 +13,7 @@ public class User {
     private String bio;
     private String avatarUrl;
 
-    public User(Long id, String username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public User(Long id, Username username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -23,7 +24,7 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public static User reconstruct(Long id, String username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public static User reconstruct(Long id, Username username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 
@@ -32,7 +33,7 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return username.getValue();
     }
 
     public String getEmail() {

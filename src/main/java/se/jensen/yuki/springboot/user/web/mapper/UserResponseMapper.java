@@ -4,11 +4,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.vo.mapper.EmailMapper;
+import se.jensen.yuki.springboot.user.domain.vo.mapper.UsernameMapper;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserRequestDTO;
 
 @Mapper(componentModel = "spring",
-        uses = {EmailMapper.class},
+        uses = {EmailMapper.class, UsernameMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserResponseMapper {
 

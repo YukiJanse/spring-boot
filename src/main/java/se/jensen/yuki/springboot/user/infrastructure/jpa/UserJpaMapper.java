@@ -3,6 +3,7 @@ package se.jensen.yuki.springboot.user.infrastructure.jpa;
 import org.springframework.stereotype.Component;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.vo.Email;
+import se.jensen.yuki.springboot.user.domain.vo.Username;
 
 @Component
 public class UserJpaMapper {
@@ -19,7 +20,7 @@ public class UserJpaMapper {
     public User toDomain(UserJpaEntity user) {
         return User.reconstruct(
                 user.getId(),
-                user.getUsername(),
+                Username.of(user.getUsername()),
                 Email.of(user.getEmail()),
                 user.getPassword(),
                 user.getRole(),
