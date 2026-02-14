@@ -6,7 +6,7 @@ public final class UserRole {
     private final String value;
     private static final Set VALID_ROLES = Set.of("USER", "ADMIN");
 
-    public UserRole(String value) {
+    private UserRole(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Role cannot be null or blank");
         }

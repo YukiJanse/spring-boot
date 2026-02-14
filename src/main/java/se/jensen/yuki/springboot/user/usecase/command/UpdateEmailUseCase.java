@@ -27,7 +27,7 @@ public class UpdateEmailUseCase {
             throw new IllegalArgumentException("Current password is incorrect");
         }
 
-        Email newEmail = new Email(request.email());
+        Email newEmail = Email.of(request.email());
 
         user.changeEmail(newEmail);
 

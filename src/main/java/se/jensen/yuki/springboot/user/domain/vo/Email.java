@@ -9,7 +9,7 @@ public final class Email {
 
     private final String value;
 
-    public Email(String value) {
+    private Email(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Email cannot be null or blank");
         }

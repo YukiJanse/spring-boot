@@ -3,7 +3,7 @@ package se.jensen.yuki.springboot.user.domain.vo;
 public final class Username {
     private final String value;
 
-    public Username(String value) {
+    private Username(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Username cannot be null or blank");
         }

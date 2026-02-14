@@ -7,7 +7,7 @@ public final class HashedPassword {
     private final static int LENGTH = 60;
     private final static Pattern BCRYPT_PATTERN = Pattern.compile("^\\$2[aby]\\$\\d{2}\\$[./A-Za-z0-9]{53}$");
 
-    public HashedPassword(String value) {
+    private HashedPassword(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or blank");
         }
