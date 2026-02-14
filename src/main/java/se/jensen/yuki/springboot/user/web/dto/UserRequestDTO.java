@@ -34,7 +34,7 @@ public record UserRequestDTO(
 
         @NotBlank(message = "It can't be empty")
         @Size(min = 1, max = 200, message = "It must be between 1 - 200 letters")
-        @Pattern(regexp = "^[A-Za-z0-9 ,.]*$", message = "Only letters, numbers, space, \",\" and \".\" allowed")
+        @Pattern(regexp = "^[\\p{L}\\p{N} ,.?!'\"\\-()]*$", message = "Allowed characters: letters, numbers, spaces, and .,?!'\"-()")
         String bio,
 
         @Size(max = 30, message = "It must be max 30 letters")

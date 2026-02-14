@@ -9,10 +9,10 @@ public class User {
     private HashedPassword password;
     private UserRole role;
     private DisplayName displayName;
-    private String bio;
+    private Bio bio;
     private String avatarUrl;
 
-    public User(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, String bio, String avatarUrl) {
+    public User(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -23,7 +23,7 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public static User reconstruct(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, String bio, String avatarUrl) {
+    public static User reconstruct(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, String avatarUrl) {
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 
@@ -52,7 +52,7 @@ public class User {
     }
 
     public String getBio() {
-        return bio;
+        return bio.getValue();
     }
 
     public String getAvatarUrl() {
@@ -71,7 +71,7 @@ public class User {
         this.password = newHashedPassword;
     }
 
-    public void updateProfile(DisplayName newDisplayName, String newBio, String newAvatarUrl) {
+    public void updateProfile(DisplayName newDisplayName, Bio newBio, String newAvatarUrl) {
         // TODO: add validation for display name, bio, and avatar URL if needed
         this.displayName = newDisplayName;
         this.bio = newBio;

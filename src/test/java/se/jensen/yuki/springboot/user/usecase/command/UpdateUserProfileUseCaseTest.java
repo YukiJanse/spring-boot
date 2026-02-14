@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.Bio;
 import se.jensen.yuki.springboot.user.domain.vo.DisplayName;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
@@ -44,7 +45,7 @@ class UpdateUserProfileUseCaseTest {
 
         verify(user).updateProfile(
                 DisplayName.of("NewName"),
-                "NewBio",
+                Bio.of("NewBio"),
                 "/avatar.png");
         verify(userRepository).save(user);
         verify(userMapper).toResponse(user);
