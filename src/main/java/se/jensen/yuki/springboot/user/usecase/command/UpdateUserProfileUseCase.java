@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.DisplayName;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
@@ -23,7 +24,9 @@ public class UpdateUserProfileUseCase {
 
         User user = userRepository.findById(id);
 
-        user.updateProfile(request.displayName(), request.bio(), request.avatarUrl());
+        DisplayName displayName = DisplayName.of(request.displayName());
+
+        user.updateProfile(displayName, request.bio(), request.avatarUrl());
 
         userRepository.save(user);
 

@@ -2,10 +2,7 @@ package se.jensen.yuki.springboot.user.infrastructure.jpa;
 
 import org.springframework.stereotype.Component;
 import se.jensen.yuki.springboot.user.domain.User;
-import se.jensen.yuki.springboot.user.domain.vo.Email;
-import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
-import se.jensen.yuki.springboot.user.domain.vo.UserRole;
-import se.jensen.yuki.springboot.user.domain.vo.Username;
+import se.jensen.yuki.springboot.user.domain.vo.*;
 
 @Component
 public class UserJpaMapper {
@@ -26,7 +23,7 @@ public class UserJpaMapper {
                 Email.of(user.getEmail()),
                 HashedPassword.of(user.getPassword()),
                 UserRole.of(user.getRole()),
-                user.getDisplayName(),
+                DisplayName.of(user.getDisplayName()),
                 user.getBio(),
                 user.getAvatarUrl()
         );

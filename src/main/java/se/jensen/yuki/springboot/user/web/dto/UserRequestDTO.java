@@ -29,7 +29,7 @@ public record UserRequestDTO(
 
         @NotBlank(message = "It can't be empty")
         @Size(min = 3, max = 30, message = "It must be between 3 - 30 letters")
-        @Pattern(regexp = "^[A-Za-z0-9 ]*$", message = "Only letters, numbers and space allowed")
+        @Pattern(regexp = "^[\\p{L}\\p{N} _.-]{2,29}$", message = "Display name must be 3–30 characters and contain only letters, numbers, spaces, \".\", \"_\" or \"-\".")
         String displayName,
 
         @NotBlank(message = "It can't be empty")
