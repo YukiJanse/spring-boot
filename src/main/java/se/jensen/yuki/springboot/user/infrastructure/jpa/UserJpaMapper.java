@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.vo.Email;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
+import se.jensen.yuki.springboot.user.domain.vo.UserRole;
 import se.jensen.yuki.springboot.user.domain.vo.Username;
 
 @Component
@@ -24,7 +25,7 @@ public class UserJpaMapper {
                 Username.of(user.getUsername()),
                 Email.of(user.getEmail()),
                 HashedPassword.of(user.getPassword()),
-                user.getRole(),
+                UserRole.of(user.getRole()),
                 user.getDisplayName(),
                 user.getBio(),
                 user.getAvatarUrl()
