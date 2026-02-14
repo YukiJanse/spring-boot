@@ -25,7 +25,7 @@ public class UserJpaMapper {
                 UserRole.of(user.getRole()),
                 DisplayName.of(user.getDisplayName()),
                 Bio.of(user.getBio()),
-                user.getAvatarUrl()
+                AvatarUrl.of(user.getAvatarUrl())
         );
     }
 }
