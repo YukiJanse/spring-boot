@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
 @Slf4j
@@ -31,7 +32,9 @@ public class UpdatePasswordUseCase {
             throw new IllegalArgumentException("New password must be different from the current password");
         }
 
-        user.changePassword(passwordEncoder.encode(request.newPassword()));
+        HashedPassword newHashedPassword = HashedPassword.of(passwordEncoder.encode(request.newPassword()));
+
+        user.changePassword(newHashedPassword);
 
         userRepository.save(user);
 

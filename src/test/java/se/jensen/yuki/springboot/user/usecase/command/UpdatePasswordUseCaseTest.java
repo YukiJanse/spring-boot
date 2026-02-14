@@ -6,8 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import se.jensen.yuki.springboot.testutil.TestPasswords;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,21 +36,25 @@ class UpdatePasswordUseCaseTest {
 
         User user = mock(User.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn("encoded-password");
+        String currentEncodedPassword = TestPasswords.hashed("current-password");
 
-        when(passwordEncoder.matches("current-password", "encoded-password"))
+        when(userRepository.findById(userId)).thenReturn(user);
+        when(user.getPassword()).thenReturn(currentEncodedPassword);
+
+        when(passwordEncoder.matches(request.currentPassword(), currentEncodedPassword))
                 .thenReturn(true);
 
-        when(passwordEncoder.matches("new-password", "encoded-password"))
+        when(passwordEncoder.matches(request.newPassword(), currentEncodedPassword))
                 .thenReturn(false);
 
+        String newHashedPassword = TestPasswords.hashed("new-encoded-password");
+
         when(passwordEncoder.encode("new-password"))
-                .thenReturn("new-encoded-password");
+                .thenReturn(newHashedPassword);
 
         useCase.execute(userId, request);
 
-        verify(user).changePassword("new-encoded-password");
+        verify(user).changePassword(HashedPassword.of(newHashedPassword));
         verify(userRepository).save(user);
     }
 

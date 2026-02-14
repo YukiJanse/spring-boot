@@ -1,19 +1,20 @@
 package se.jensen.yuki.springboot.user.domain;
 
 import se.jensen.yuki.springboot.user.domain.vo.Email;
+import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 import se.jensen.yuki.springboot.user.domain.vo.Username;
 
 public class User {
     private final Long id;
     private Username username;
     private Email email;
-    private String password;
+    private HashedPassword password;
     private String role;
     private String displayName;
     private String bio;
     private String avatarUrl;
 
-    public User(Long id, Username username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public User(Long id, Username username, Email email, HashedPassword password, String role, String displayName, String bio, String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -24,7 +25,7 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public static User reconstruct(Long id, Username username, Email email, String password, String role, String displayName, String bio, String avatarUrl) {
+    public static User reconstruct(Long id, Username username, Email email, HashedPassword password, String role, String displayName, String bio, String avatarUrl) {
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 
@@ -41,7 +42,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return password.getValue();
     }
 
     public String getRole() {
@@ -67,7 +68,7 @@ public class User {
         this.email = newEmail;
     }
 
-    public void changePassword(String newHashedPassword) {
+    public void changePassword(HashedPassword newHashedPassword) {
         // TODO: add validation for the new hashed password if needed
         this.password = newHashedPassword;
     }
