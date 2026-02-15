@@ -3,7 +3,7 @@ package se.jensen.yuki.springboot.user.domain;
 import se.jensen.yuki.springboot.user.domain.vo.*;
 
 public class User {
-    private final Long id;
+    private final UserId id;
     private Username username;
     private Email email;
     private HashedPassword password;
@@ -12,7 +12,7 @@ public class User {
     private Bio bio;
     private AvatarUrl avatarUrl;
 
-    public User(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, AvatarUrl avatarUrl) {
+    public User(UserId id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, AvatarUrl avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -23,12 +23,12 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public static User reconstruct(Long id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, AvatarUrl avatarUrl) {
+    public static User reconstruct(UserId id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, AvatarUrl avatarUrl) {
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 
     public Long getId() {
-        return id;
+        return id.getValue();
     }
 
     public String getUsername() {
