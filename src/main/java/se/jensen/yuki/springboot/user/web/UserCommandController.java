@@ -15,6 +15,9 @@ import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 
+/**
+ * REST controller for handling user-related commands such as updating profile, email, password, and deleting the user account.
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +30,12 @@ public class UserCommandController {
     private final DeleteUserUseCase deleteUserUseCase;
 
 
+    /**
+     * Updates the profile of the currently authenticated user.
+     *
+     * @param request the request containing the new profile information
+     * @return a response entity containing the updated user profile
+     */
     @PutMapping("/me/profile")
     public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UserUpdateProfileRequest request) {
         log.debug("Stating to update my profile");
@@ -36,6 +45,12 @@ public class UserCommandController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Updates the email of the currently authenticated user.
+     *
+     * @param request the request containing the new email information
+     * @return a response entity with no content
+     */
     @PutMapping("/me/email")
     public ResponseEntity<Void> updateEmail(@Valid @RequestBody UserUpdateEmailRequest request) {
         log.debug("Stating to update my Account");
@@ -47,6 +62,12 @@ public class UserCommandController {
                 .build();
     }
 
+    /**
+     * Updates the password of the currently authenticated user.
+     *
+     * @param request the request containing the current and new password information
+     * @return a response entity with no content
+     */
     @PutMapping("/me/password")
     public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request) {
         log.debug("Stating to update my Account");
@@ -56,6 +77,12 @@ public class UserCommandController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Deletes the account of the currently authenticated user.
+     *
+     * @param id the ID of the user to delete
+     * @return a response entity with no content
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         log.debug("Starting to delete a user by id={}", id);

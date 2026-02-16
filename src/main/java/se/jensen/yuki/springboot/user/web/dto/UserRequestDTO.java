@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * UserRequestDTO is a record that represents the data transfer object for user requests.
+ * It includes validation annotations to ensure that the input data meets specific criteria.
+ */
 public record UserRequestDTO(
         @NotBlank(message = "It can't be empty")
         @Size(min = 3, max = 50, message = "It must be between 3 - 50 letters")

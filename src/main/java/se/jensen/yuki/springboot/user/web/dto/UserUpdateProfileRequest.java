@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO for updating a user's profile information, including display name, bio, and avatar URL.
+ */
 public record UserUpdateProfileRequest(
         @Size(min = 3, max = 30, message = "It must be between 3 - 30 letters")
         @Pattern(regexp = "^[\\p{L}\\p{N} _.-]{2,29}$", message = "Display name must be 3–30 characters and contain only letters, numbers, spaces, \".\", \"_\" or \"-\".")
