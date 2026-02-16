@@ -3,6 +3,8 @@ package se.jensen.yuki.springboot.user.domain;
 import lombok.Getter;
 import se.jensen.yuki.springboot.user.domain.vo.*;
 
+import java.util.Objects;
+
 @Getter
 public class User {
     private final UserId id;
@@ -34,19 +36,30 @@ public class User {
     }
 
     public void changeEmail(Email newEmail) {
+        Objects.requireNonNull(newEmail, "New email cannot be null");
+
         if (this.email.equals(newEmail)) {
             throw new IllegalArgumentException("New email must be different from the current email.");
         }
+
         this.email = newEmail;
     }
 
     public void changePassword(HashedPassword newHashedPassword) {
-        // TODO: add validation for the new hashed password if needed
+        Objects.requireNonNull(newHashedPassword, "New password cannot be null");
+
+        if (this.password.equals(newHashedPassword)) {
+            throw new IllegalArgumentException("New password must be different from the current password.");
+        }
+
         this.password = newHashedPassword;
     }
 
     public void updateProfile(DisplayName newDisplayName, Bio newBio, AvatarUrl newAvatarUrl) {
-        // TODO: add validation for display name, bio, and avatar URL if needed
+        Objects.requireNonNull(newDisplayName, "Display name cannot be null");
+        Objects.requireNonNull(newBio, "Bio cannot be null");
+        Objects.requireNonNull(newAvatarUrl, "Avatar URL cannot be null");
+
         this.displayName = newDisplayName;
         this.bio = newBio;
         this.avatarUrl = newAvatarUrl;
