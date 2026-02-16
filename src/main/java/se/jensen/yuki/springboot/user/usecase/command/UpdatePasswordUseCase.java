@@ -11,6 +11,9 @@ import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
+/**
+ * Use case for updating a user's password.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,12 @@ public class UpdatePasswordUseCase {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Updates a user's password.
+     *
+     * @param id      the ID of the user to update
+     * @param request the request containing the current and new passwords
+     */
     @Transactional
     public void execute(Long id, @Valid UserUpdatePasswordRequest request) {
         log.debug("Starting to update a user with ID={}", id);

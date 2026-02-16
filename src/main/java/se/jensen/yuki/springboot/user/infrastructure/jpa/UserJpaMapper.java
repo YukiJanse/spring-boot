@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.vo.*;
 
+/**
+ * Mapper for converting between User domain model and UserJpaEntity.
+ */
 @Component
 public class UserJpaMapper {
     public void toEntity(User user, UserJpaEntity entity) {

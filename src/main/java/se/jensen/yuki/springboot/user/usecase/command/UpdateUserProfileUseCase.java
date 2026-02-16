@@ -13,6 +13,9 @@ import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
 
+/**
+ * Use case for updating a user's profile information.
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +23,13 @@ public class UpdateUserProfileUseCase {
     private final UserRepository userRepository;
     private final UserResponseMapper userMapper;
 
+    /**
+     * Updates a user's profile information.
+     *
+     * @param id      the ID of the user to update
+     * @param request the request containing the new profile information
+     * @return the updated user profile response
+     */
     @Transactional
     public UserProfileResponse execute(Long id, UserUpdateProfileRequest request) {
         log.debug("Starting to update a user with ID={}", id);

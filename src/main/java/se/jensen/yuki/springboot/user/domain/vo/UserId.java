@@ -1,8 +1,17 @@
 package se.jensen.yuki.springboot.user.domain.vo;
 
+/**
+ * Value object representing a User ID.
+ */
 public final class UserId {
     private final Long value;
 
+    /**
+     * Private constructor to enforce the use of the factory method.
+     *
+     * @param value the Long value of the User ID
+     * @throws IllegalArgumentException if the value is null or not a positive number
+     */
     private UserId(Long value) {
         if (value == null || value <= 0) {
             throw new IllegalArgumentException("User ID must be a positive number.");
@@ -11,6 +20,12 @@ public final class UserId {
         this.value = value;
     }
 
+    /**
+     * Factory method to create a new UserId instance.
+     *
+     * @param value the Long value of the User ID
+     * @return a new UserId instance
+     */
     public static UserId of(Long value) {
         return new UserId(value);
     }

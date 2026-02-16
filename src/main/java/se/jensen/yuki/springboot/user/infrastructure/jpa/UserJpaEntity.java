@@ -7,6 +7,9 @@ import se.jensen.yuki.springboot.model.Post;
 
 import java.util.List;
 
+/**
+ * JPA entity representing a user in the system.
+ */
 @Entity
 @Getter
 @Setter

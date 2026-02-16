@@ -1,8 +1,21 @@
 package se.jensen.yuki.springboot.user.domain.vo;
 
+/**
+ * Value object representing a username in the user domain.
+ * <p>
+ * This class is immutable and validates the username according to specific rules:
+ * - The username cannot be null or blank.
+ * - The username must be between 3 and 20 characters long.
+ */
 public final class Username {
     private final String value;
 
+    /**
+     * Private constructor to enforce the use of the factory method.
+     *
+     * @param value the username string
+     * @throws IllegalArgumentException if the username is null, blank, or does not meet length requirements
+     */
     private Username(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Username cannot be null or blank");
@@ -15,6 +28,12 @@ public final class Username {
         this.value = value;
     }
 
+    /**
+     * Factory method to create a new Username instance.
+     *
+     * @param value the username string
+     * @return a new Username instance
+     */
     public static Username of(String value) {
         return new Username(value);
     }

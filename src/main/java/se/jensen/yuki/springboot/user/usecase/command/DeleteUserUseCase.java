@@ -6,12 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 
+/**
+ * Use case for deleting a user by ID.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeleteUserUseCase {
     private final UserRepository userRepository;
 
+    /**
+     * Deletes a user by ID.
+     *
+     * @param id the ID of the user to delete
+     */
     @Transactional
     public void execute(Long id) {
         log.debug("Starting to delete a user by ID={}", id);

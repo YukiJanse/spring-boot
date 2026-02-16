@@ -1,8 +1,17 @@
 package se.jensen.yuki.springboot.user.domain.vo;
 
+/**
+ * Value object representing a user's avatar URL.
+ */
 public final class AvatarUrl {
     private final String value;
 
+    /**
+     * Private constructor to enforce the use of the factory method.
+     *
+     * @param value the avatar URL string
+     * @throws IllegalArgumentException if the value is null or blank
+     */
     private AvatarUrl(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Avatar URL cannot be null or blank");
@@ -11,6 +20,13 @@ public final class AvatarUrl {
         this.value = value;
     }
 
+    /**
+     * Factory method to create an AvatarUrl instance.
+     *
+     * @param value the avatar URL string
+     * @return a new AvatarUrl instance
+     * @throws IllegalArgumentException if the value is null or blank
+     */
     public static AvatarUrl of(String value) {
         return new AvatarUrl(value);
     }
