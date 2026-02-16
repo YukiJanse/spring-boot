@@ -9,6 +9,8 @@ package se.jensen.yuki.springboot.user.domain.vo;
  */
 public final class Username {
     private final String value;
+    private static final int MIN_LENGTH = 3;
+    private static final int MAX_LENGTH = 20;
 
     /**
      * Private constructor to enforce the use of the factory method.
@@ -21,7 +23,7 @@ public final class Username {
             throw new IllegalArgumentException("Username cannot be null or blank");
         }
 
-        if (value.length() < 3 || value.length() > 20) {
+        if (value.length() < MIN_LENGTH || value.length() > MAX_LENGTH) {
             throw new IllegalArgumentException("Username must be between 3 and 20 characters");
         }
 
