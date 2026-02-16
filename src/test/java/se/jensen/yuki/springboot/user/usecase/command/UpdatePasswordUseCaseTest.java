@@ -35,11 +35,13 @@ class UpdatePasswordUseCaseTest {
                 new UserUpdatePasswordRequest("new-password", "current-password");
 
         User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
 
         String currentEncodedPassword = TestPasswords.hashed("current-password");
 
         when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn(currentEncodedPassword);
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn(currentEncodedPassword);
 
         when(passwordEncoder.matches(request.currentPassword(), currentEncodedPassword))
                 .thenReturn(true);
@@ -66,9 +68,11 @@ class UpdatePasswordUseCaseTest {
                 new UserUpdatePasswordRequest("new-password", "wrong-password");
 
         User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
 
         when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn("encoded-password");
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
 
         when(passwordEncoder.matches("wrong-password", "encoded-password"))
                 .thenReturn(false);
@@ -88,9 +92,11 @@ class UpdatePasswordUseCaseTest {
                 new UserUpdatePasswordRequest("same-password", "current-password");
 
         User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
 
         when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn("encoded-password");
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
 
         when(passwordEncoder.matches("current-password", "encoded-password"))
                 .thenReturn(true);

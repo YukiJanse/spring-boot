@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import se.jensen.yuki.springboot.user.domain.vo.UserRole;
 
 @Mapper(componentModel = "spring")
-public interface RoleMapper {
+public interface UserRoleMapper {
     default String map(UserRole role) {
         return role == null ? null : role.getValue();
     }

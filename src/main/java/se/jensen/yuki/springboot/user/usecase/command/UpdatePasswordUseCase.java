@@ -24,11 +24,11 @@ public class UpdatePasswordUseCase {
 
         User user = userRepository.findById(id);
 
-        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword().getValue())) {
             throw new IllegalArgumentException("Current password is incorrect");
         }
 
-        if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(request.newPassword(), user.getPassword().getValue())) {
             throw new IllegalArgumentException("New password must be different from the current password");
         }
 

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.Email;
+import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,9 +35,11 @@ class UpdateEmailUseCaseTest {
                 new UserUpdateEmailRequest("new@mail.com", "correct-password");
 
         User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
 
         when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn("encoded-password");
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
         when(passwordEncoder.matches("correct-password", "encoded-password"))
                 .thenReturn(true);
 
@@ -54,9 +57,11 @@ class UpdateEmailUseCaseTest {
                 new UserUpdateEmailRequest("new@mail.com", "wrong-password");
 
         User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
 
         when(userRepository.findById(userId)).thenReturn(user);
-        when(user.getPassword()).thenReturn("encoded-password");
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
         when(passwordEncoder.matches("wrong-password", "encoded-password"))
                 .thenReturn(false);
 

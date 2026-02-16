@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
             entity = new UserJpaEntity();
             userJpaMapper.toEntity(user, entity);
         } else {
-            entity = userJpaRepository.findById(user.getId())
+            entity = userJpaRepository.findById(user.getId().getValue())
                     .orElseThrow(() -> new UserNotFoundException("No user found with ID=" + user.getId()));
             userJpaMapper.toEntity(user, entity);
         }

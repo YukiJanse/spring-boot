@@ -7,13 +7,13 @@ import se.jensen.yuki.springboot.user.domain.vo.*;
 @Component
 public class UserJpaMapper {
     public void toEntity(User user, UserJpaEntity entity) {
-        entity.setUsername(user.getUsername());
-        entity.setEmail(user.getEmail());
-        entity.setPassword(user.getPassword());
-        entity.setRole(user.getRole());
-        entity.setDisplayName(user.getDisplayName());
-        entity.setBio(user.getBio());
-        entity.setAvatarUrl(user.getAvatarUrl());
+        entity.setUsername(user.getUsername().getValue());
+        entity.setEmail(user.getEmail().getValue());
+        entity.setPassword(user.getPassword().getValue());
+        entity.setRole(user.getRole().getValue());
+        entity.setDisplayName(user.getDisplayName().getValue());
+        entity.setBio(user.getBio().getValue());
+        entity.setAvatarUrl(user.getAvatarUrl().getValue());
     }
 
     public User toDomain(UserJpaEntity user) {
