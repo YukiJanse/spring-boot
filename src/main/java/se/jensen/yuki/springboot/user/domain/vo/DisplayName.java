@@ -9,10 +9,6 @@ public final class DisplayName {
     private static final Pattern VALID_CHARACTERS = Pattern.compile("^[\\p{L}\\p{N}][\\p{L}\\p{N} _.-]{2,29}$");
 
     private DisplayName(String value) {
-        this.value = value;
-    }
-
-    public static DisplayName of(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new IllegalArgumentException("Display name cannot be null or empty");
         }
@@ -25,6 +21,10 @@ public final class DisplayName {
             throw new IllegalArgumentException("Display name contains invalid characters");
         }
 
+        this.value = value;
+    }
+
+    public static DisplayName of(String value) {
         return new DisplayName(value);
     }
 

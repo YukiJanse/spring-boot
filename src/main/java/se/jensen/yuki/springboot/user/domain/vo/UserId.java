@@ -4,14 +4,14 @@ public final class UserId {
     private final Long value;
 
     private UserId(Long value) {
-        this.value = value;
-    }
-
-    public static UserId of(Long value) {
         if (value == null || value <= 0) {
             throw new IllegalArgumentException("User ID must be a positive number.");
         }
 
+        this.value = value;
+    }
+
+    public static UserId of(Long value) {
         return new UserId(value);
     }
 

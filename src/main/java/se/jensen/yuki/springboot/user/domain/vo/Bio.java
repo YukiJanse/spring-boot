@@ -8,10 +8,6 @@ public final class Bio {
     private static final Pattern BIO_PATTERN = Pattern.compile("^[\\p{L}\\p{N} ,.?!'\"\\-()]*$");
 
     private Bio(String value) {
-        this.value = value;
-    }
-
-    public static Bio of(String value) {
         if (value == null || value.length() > MAX_LENGTH) {
             throw new IllegalArgumentException("Bio must be between 0 and " + MAX_LENGTH + " characters");
         }
@@ -20,6 +16,10 @@ public final class Bio {
             throw new IllegalArgumentException("Bio contains invalid characters");
         }
 
+        this.value = value;
+    }
+
+    public static Bio of(String value) {
         return new Bio(value);
     }
 
