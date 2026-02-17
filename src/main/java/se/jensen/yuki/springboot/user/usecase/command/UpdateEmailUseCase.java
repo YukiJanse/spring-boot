@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.Email;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 
 /**
@@ -30,7 +31,7 @@ public class UpdateEmailUseCase {
     public void execute(Long id, UserUpdateEmailRequest request) {
         log.debug("Starting to update a user with ID={}", id);
 
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(UserId.of(id));
 
         if (!passwordEncoder.matches(request.currentPassword(), user.getPassword().getValue())) {
             throw new IllegalArgumentException("Current password is incorrect");

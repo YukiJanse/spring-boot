@@ -3,6 +3,7 @@ package se.jensen.yuki.springboot.user.usecase.query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
 
@@ -24,7 +25,8 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public UserProfileResponse findById(Long id) {
-        return userMapper.toResponse(userRepository.findById(id));
+        UserId userId = UserId.of(id);
+        return userMapper.toResponse(userRepository.findById(userId));
     }
 
 }

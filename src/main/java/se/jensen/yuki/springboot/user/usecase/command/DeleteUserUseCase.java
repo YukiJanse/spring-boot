@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 
 /**
  * Use case for deleting a user by ID.
@@ -24,7 +25,7 @@ public class DeleteUserUseCase {
     public void execute(Long id) {
         log.debug("Starting to delete a user by ID={}", id);
 
-        userRepository.deleteById(id);
+        userRepository.deleteById(UserId.of(id));
 
         log.debug("Deleted a user successfully by ID={}", id);
     }

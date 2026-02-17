@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class UserRepositoryImpl implements UserRepository {
      * @throws UserNotFoundException if no user is found with the given ID
      */
     @Override
-    public User findById(Long id) {
-        return userJpaRepository.findById(id)
+    public User findById(UserId id) {
+        return userJpaRepository.findById(id.getValue())
                 .map(userJpaMapper::toDomain)
                 .orElseThrow(() -> new UserNotFoundException("No user found with ID=" + id));
     }
@@ -69,8 +70,8 @@ public class UserRepositoryImpl implements UserRepository {
      * @param id the ID of the user to delete
      */
     @Override
-    public void deleteById(Long id) {
-        userJpaRepository.deleteById(id);
+    public void deleteById(UserId id) {
+        userJpaRepository.deleteById(id.getValue());
     }
 
     /**

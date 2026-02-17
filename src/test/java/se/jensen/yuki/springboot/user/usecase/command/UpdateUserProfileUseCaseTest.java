@@ -10,6 +10,7 @@ import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.AvatarUrl;
 import se.jensen.yuki.springboot.user.domain.vo.Bio;
 import se.jensen.yuki.springboot.user.domain.vo.DisplayName;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
@@ -32,6 +33,7 @@ class UpdateUserProfileUseCaseTest {
     @Test
     void execute_shouldUpdateProfile_andReturnResponse() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdateProfileRequest request =
                 new UserUpdateProfileRequest("NewName", "NewBio", "/avatar.png");
@@ -39,7 +41,7 @@ class UpdateUserProfileUseCaseTest {
         User user = mock(User.class);
         UserProfileResponse response = mock(UserProfileResponse.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(userMapper.toResponse(user)).thenReturn(response);
 
         UserProfileResponse result = useCase.execute(userId, request);

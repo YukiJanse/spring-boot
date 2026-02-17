@@ -9,6 +9,7 @@ import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.AvatarUrl;
 import se.jensen.yuki.springboot.user.domain.vo.Bio;
 import se.jensen.yuki.springboot.user.domain.vo.DisplayName;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserProfileResponse;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateProfileRequest;
 import se.jensen.yuki.springboot.user.web.mapper.UserResponseMapper;
@@ -34,7 +35,7 @@ public class UpdateUserProfileUseCase {
     public UserProfileResponse execute(Long id, UserUpdateProfileRequest request) {
         log.debug("Starting to update a user with ID={}", id);
 
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(UserId.of(id));
 
         DisplayName displayName = DisplayName.of(request.displayName());
         Bio bio = Bio.of(request.bio());

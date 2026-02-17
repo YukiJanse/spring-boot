@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,9 +36,10 @@ class DeleteUserUseCaseTest {
     void execute_ShouldHandleNonExistingUser() {
         // Given
         Long nonExistingUserId = 999L;
+        UserId nonExistingUserIdVo = UserId.of(nonExistingUserId);
 
         doThrow(new RuntimeException("DB failure"))
-                .when(userRepository).deleteById(nonExistingUserId);
+                .when(userRepository).deleteById(nonExistingUserIdVo);
 
         assertThrows(RuntimeException.class,
                 () -> useCase.execute(nonExistingUserId));

@@ -10,6 +10,7 @@ import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.Email;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdateEmailRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +31,7 @@ class UpdateEmailUseCaseTest {
     @Test
     void execute_shouldUpdateEmail_whenPasswordMatches() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdateEmailRequest request =
                 new UserUpdateEmailRequest("new@mail.com", "correct-password");
@@ -37,7 +39,7 @@ class UpdateEmailUseCaseTest {
         User user = mock(User.class);
         HashedPassword password = mock(HashedPassword.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(user.getPassword()).thenReturn(password);
         when(password.getValue()).thenReturn("encoded-password");
         when(passwordEncoder.matches("correct-password", "encoded-password"))
@@ -52,6 +54,7 @@ class UpdateEmailUseCaseTest {
     @Test
     void execute_shouldThrowException_whenPasswordDoesNotMatch() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdateEmailRequest request =
                 new UserUpdateEmailRequest("new@mail.com", "wrong-password");
@@ -59,7 +62,7 @@ class UpdateEmailUseCaseTest {
         User user = mock(User.class);
         HashedPassword password = mock(HashedPassword.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(user.getPassword()).thenReturn(password);
         when(password.getValue()).thenReturn("encoded-password");
         when(passwordEncoder.matches("wrong-password", "encoded-password"))

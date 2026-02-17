@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
 /**
@@ -31,7 +32,7 @@ public class UpdatePasswordUseCase {
     public void execute(Long id, @Valid UserUpdatePasswordRequest request) {
         log.debug("Starting to update a user with ID={}", id);
 
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(UserId.of(id));
 
         if (!passwordEncoder.matches(request.currentPassword(), user.getPassword().getValue())) {
             throw new IllegalArgumentException("Current password is incorrect");

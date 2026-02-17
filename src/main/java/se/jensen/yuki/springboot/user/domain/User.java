@@ -73,6 +73,7 @@ public class User {
      * @return a User instance with the specified properties and ID
      */
     public static User reconstruct(UserId id, Username username, Email email, HashedPassword password, UserRole role, DisplayName displayName, Bio bio, AvatarUrl avatarUrl) {
+        Objects.requireNonNull(id, "User ID cannot be null for reconstruction");
         return new User(id, username, email, password, role, displayName, bio, avatarUrl);
     }
 

@@ -1,5 +1,7 @@
 package se.jensen.yuki.springboot.user.domain;
 
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
+
 import java.util.List;
 
 /**
@@ -10,9 +12,9 @@ public interface UserRepository {
      * Finds a User by their unique identifier.
      *
      * @param id the unique identifier of the User
-     * @return the User with the specified id, or null if no such User exists
+     * @return the User with the specified id, or throw exception if no such User exists
      */
-    User findById(Long id);
+    User findById(UserId id);
 
     /**
      * Saves a User to the repository. If the User already exists, it will be updated; otherwise, a new User will be created.
@@ -34,7 +36,7 @@ public interface UserRepository {
      *
      * @param id the unique identifier of the User to delete
      */
-    void deleteById(Long id);
+    void deleteById(UserId id);
 
     /**
      * Retrieves all Users from the repository.

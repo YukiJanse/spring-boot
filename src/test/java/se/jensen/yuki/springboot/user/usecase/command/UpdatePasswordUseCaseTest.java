@@ -10,6 +10,7 @@ import se.jensen.yuki.springboot.testutil.TestPasswords;
 import se.jensen.yuki.springboot.user.domain.User;
 import se.jensen.yuki.springboot.user.domain.UserRepository;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +31,7 @@ class UpdatePasswordUseCaseTest {
     @Test
     void execute_shouldUpdatePassword_whenValidRequest() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdatePasswordRequest request =
                 new UserUpdatePasswordRequest("new-password", "current-password");
@@ -39,7 +41,7 @@ class UpdatePasswordUseCaseTest {
 
         String currentEncodedPassword = TestPasswords.hashed("current-password");
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(user.getPassword()).thenReturn(password);
         when(password.getValue()).thenReturn(currentEncodedPassword);
 
@@ -63,6 +65,7 @@ class UpdatePasswordUseCaseTest {
     @Test
     void execute_shouldThrowException_whenCurrentPasswordIncorrect() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdatePasswordRequest request =
                 new UserUpdatePasswordRequest("new-password", "wrong-password");
@@ -70,7 +73,7 @@ class UpdatePasswordUseCaseTest {
         User user = mock(User.class);
         HashedPassword password = mock(HashedPassword.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(user.getPassword()).thenReturn(password);
         when(password.getValue()).thenReturn("encoded-password");
 
@@ -87,6 +90,7 @@ class UpdatePasswordUseCaseTest {
     @Test
     void execute_shouldThrowException_whenNewPasswordSameAsCurrent() {
         Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
 
         UserUpdatePasswordRequest request =
                 new UserUpdatePasswordRequest("same-password", "current-password");
@@ -94,7 +98,7 @@ class UpdatePasswordUseCaseTest {
         User user = mock(User.class);
         HashedPassword password = mock(HashedPassword.class);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userIdVo)).thenReturn(user);
         when(user.getPassword()).thenReturn(password);
         when(password.getValue()).thenReturn("encoded-password");
 
