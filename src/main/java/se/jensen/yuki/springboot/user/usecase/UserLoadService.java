@@ -13,7 +13,7 @@ public interface UserLoadService {
      * @param id the unique identifier of the user
      * @return the UserJpaEntity corresponding to the given id, or null if not found
      */
-    UserJpaEntity loadById(Long id);
+    UserJpaEntity requireJpaById(Long id);
 
     /**
      * Loads a user by their email address.
@@ -21,5 +21,5 @@ public interface UserLoadService {
      * @param email the email address of the user
      * @return the UserJpaEntity corresponding to the given email, or null if not found
      */
-    UserJpaEntity loadByEmail(String email);
+    UserJpaEntity requireJpaByEmail(String email);
 }

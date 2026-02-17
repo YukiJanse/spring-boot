@@ -15,6 +15,6 @@ public class CurrentUserProvider {
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        return userLoadService.loadByEmail(email).getId();
+        return userLoadService.requireJpaByEmail(email).getId();
     }
 }

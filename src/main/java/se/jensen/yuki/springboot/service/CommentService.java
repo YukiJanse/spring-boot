@@ -36,7 +36,7 @@ public class CommentService {
         } else if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        UserJpaEntity author = userLoadService.loadById(userId);
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post doesn't exist with id=" + postId));
         Comment comment;
         // If there is a parent comment

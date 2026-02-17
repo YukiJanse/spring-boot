@@ -57,7 +57,7 @@ public class PostService {
 
     public PostFeedResponse addPost(Long userId, PostCreateRequest requestDTO) {
         log.info("Starting to add a post");
-        UserJpaEntity author = userLoadService.loadById(userId);
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post post = postMapper.PostCreateToPost(requestDTO, author);
         postRepository.save(post);
         log.info("Added a post successfully");
@@ -76,7 +76,7 @@ public class PostService {
             throw new IllegalArgumentException("Invalid User ID");
         }
 
-        UserJpaEntity author = userLoadService.loadById(userId);
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post currentPost = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post found with id= " + postId));

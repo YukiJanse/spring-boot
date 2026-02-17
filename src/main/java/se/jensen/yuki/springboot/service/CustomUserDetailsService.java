@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserJpaEntity user = userLoadService.loadByEmail(email);
+        UserJpaEntity user = userLoadService.requireJpaByEmail(email);
         return new SecurityUser(user.getId(), user.getEmail(), user.getRole(), user.getPassword());
     }
 }

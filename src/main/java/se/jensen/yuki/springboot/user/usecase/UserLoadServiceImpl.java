@@ -22,7 +22,7 @@ public class UserLoadServiceImpl implements UserLoadService {
      * @throws UserNotFoundException if no user is found with the given ID
      */
     @Override
-    public UserJpaEntity loadById(Long id) {
+    public UserJpaEntity requireJpaById(Long id) {
         return userJpaRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found by id " + id));
     }
@@ -35,7 +35,7 @@ public class UserLoadServiceImpl implements UserLoadService {
      * @throws UserNotFoundException if no user is found with the given email
      */
     @Override
-    public UserJpaEntity loadByEmail(String email) {
+    public UserJpaEntity requireJpaByEmail(String email) {
         return userJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found by email " + email));
     }

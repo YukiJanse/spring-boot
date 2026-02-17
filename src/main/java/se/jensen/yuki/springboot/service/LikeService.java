@@ -38,7 +38,7 @@ public class LikeService {
         } else {
             PostLike postLike = new PostLike();
             postLike.setPost(postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found")));
-            postLike.setUser(userLoadService.loadById(userId));
+            postLike.setUser(userLoadService.requireJpaById(userId));
             postLikeRepository.save(postLike);
             return new LikeResponse(true, postLikeRepository.countByPostId(postId));
         }
@@ -71,7 +71,7 @@ public class LikeService {
         } else {
             CommentLike cl = new CommentLike();
             cl.setComment(commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment not found")));
-            cl.setUser(userLoadService.loadById(userId));
+            cl.setUser(userLoadService.requireJpaById(userId));
             commentLikeRepository.save(cl);
             return new LikeResponse(true, commentLikeRepository.countByCommentId(commentId));
         }
