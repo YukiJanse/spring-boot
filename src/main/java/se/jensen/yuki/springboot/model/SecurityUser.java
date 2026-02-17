@@ -4,7 +4,6 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,11 +14,11 @@ public class SecurityUser implements UserDetails {
     private final String role;
     private final String password;
 
-    public SecurityUser(UserJpaEntity user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.role = user.getRole();
-        this.password = user.getPassword();
+    public SecurityUser(Long id, String email, String role, String password) {
+        this.id = id;
+        this.email = email;
+        this.role = role;
+        this.password = password;
     }
 
     public SecurityUser(Long id, String email, String role) {
@@ -56,8 +55,7 @@ public class SecurityUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String r = role;
-        String role = r == null || r.isBlank() ? "ROLE_USER" :
-                (r.startsWith("ROLE_") ? r : "ROLE_" + r);
+        String role = r == null || r.isBlank() ? "USER" : r;
         return List.of(new SimpleGrantedAuthority(role));
     }
 

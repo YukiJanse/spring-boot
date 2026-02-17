@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         UserJpaEntity user = userLoadService.loadById(userId);
 
-        SecurityUser securityUser = new SecurityUser(user);
+        SecurityUser securityUser = new SecurityUser(user.getId(), user.getEmail(), user.getPassword(), user.getRole());
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(
                         securityUser,
