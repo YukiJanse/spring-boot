@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 @Entity
 @Setter
@@ -26,10 +27,10 @@ public class Mute extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "muting_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User muting;
+    private UserJpaEntity muting;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "muted_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User muted;
+    private UserJpaEntity muted;
 }

@@ -1,5 +1,6 @@
 package se.jensen.yuki.springboot.service;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,30 +15,25 @@ import se.jensen.yuki.springboot.dto.post.PostCreateRequest;
 import se.jensen.yuki.springboot.dto.post.PostCreateResponse;
 import se.jensen.yuki.springboot.dto.post.PostFeedResponse;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.PostMapper;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.util.List;
 
+
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostMapper postMapper;
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
-
-    public PostService(PostMapper postMapper, PostRepository postRepository, UserRepository userRepository) {
-        this.postMapper = postMapper;
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
+    private final UserLoadService userLoadService;
 
     /**
-     * MUST MODIFY RETURN TYPE
+     * TODO: MUST MODIFY RETURN TYPE
      *
      * @return
      */
@@ -61,7 +57,7 @@ public class PostService {
 
     public PostFeedResponse addPost(Long userId, PostCreateRequest requestDTO) {
         log.info("Starting to add a post");
-        User author = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("The post's author doesn't exist"));
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post post = postMapper.PostCreateToPost(requestDTO, author);
         postRepository.save(post);
         log.info("Added a post successfully");
@@ -80,9 +76,7 @@ public class PostService {
             throw new IllegalArgumentException("Invalid User ID");
         }
 
-        User author = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("The request author doesn't exist"));
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post currentPost = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post found with id= " + postId));

@@ -2,6 +2,7 @@ package se.jensen.yuki.springboot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 import java.time.Instant;
 
@@ -19,7 +20,7 @@ public class RefreshToken extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+    private UserJpaEntity user;
 
     private String token;
 

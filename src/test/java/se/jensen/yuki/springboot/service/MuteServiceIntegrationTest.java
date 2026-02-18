@@ -10,8 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.mute.MuteMutingResponse;
 import se.jensen.yuki.springboot.dto.mute.MuteResponse;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,18 +25,18 @@ class MuteServiceIntegrationTest {
     private MuteService muteService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
 
-    private User user1;
-    private User user2;
+    private UserJpaEntity user1;
+    private UserJpaEntity user2;
 
 
     @BeforeEach
     void setUp() {
 
-        user1 = userRepository.save(
-                User.builder()
+        user1 = userJpaRepository.save(
+                UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
                         .password("pass")
@@ -46,8 +46,8 @@ class MuteServiceIntegrationTest {
                         .build()
         );
 
-        user2 = userRepository.save(
-                User.builder()
+        user2 = userJpaRepository.save(
+                UserJpaEntity.builder()
                         .username("user2")
                         .email("user2@test.com")
                         .password("pass")
@@ -123,7 +123,7 @@ class MuteServiceIntegrationTest {
         assertThat(slice.getContent()).hasSize(1);
 
         MuteMutingResponse res =
-                slice.getContent().get(0);
+                slice.getContent().getFirst();
 
         assertThat(res.mutedUserId()).isEqualTo(user2.getId());
     }

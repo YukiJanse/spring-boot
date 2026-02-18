@@ -7,9 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.follow.FollowResponse;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.FollowRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,24 +21,24 @@ public class FollowServiceIntegrationTest {
     private FollowService followService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private FollowRepository followRepository;
 
 
-    private User userA;
-    private User userB;
+    private UserJpaEntity userA;
+    private UserJpaEntity userB;
 
 
     @BeforeEach
     void setup() {
 
         followRepository.deleteAll();
-        userRepository.deleteAll();
+        userJpaRepository.deleteAll();
 
-        userA = userRepository.save(
-                User.builder()
+        userA = userJpaRepository.save(
+                UserJpaEntity.builder()
                         .username("userA")
                         .email("a@test.com")
                         .password("pw")
@@ -48,8 +48,8 @@ public class FollowServiceIntegrationTest {
                         .build()
         );
 
-        userB = userRepository.save(
-                User.builder()
+        userB = userJpaRepository.save(
+                UserJpaEntity.builder()
                         .username("userB")
                         .email("b@test.com")
                         .password("pw")

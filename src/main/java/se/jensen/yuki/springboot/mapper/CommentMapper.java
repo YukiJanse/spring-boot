@@ -10,7 +10,7 @@ import se.jensen.yuki.springboot.dto.comment.CommentReplyResponse;
 import se.jensen.yuki.springboot.dto.comment.CommentUpdateResponse;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentMapper {
@@ -19,14 +19,14 @@ public interface CommentMapper {
     @Mapping(target = "parent", ignore = true)
     @Mapping(target = "deleted", expression = "java(false)")
     @Mapping(target = "edited", expression = "java(false)")
-    Comment createRequestToComment(Post post, User author, CommentCreateRequest request);
+    Comment createRequestToComment(Post post, UserJpaEntity author, CommentCreateRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "content", source = "request.content")
     @Mapping(target = "parent", source = "parent")
     @Mapping(target = "deleted", expression = "java(false)")
     @Mapping(target = "edited", expression = "java(false)")
-    Comment createRequestToComment(Post post, User author, Comment parent, CommentCreateRequest request);
+    Comment createRequestToComment(Post post, UserJpaEntity author, Comment parent, CommentCreateRequest request);
 
     @Mapping(target = "authorUserId", source = "comment.author.id")
     @Mapping(target = "authorUsername", source = "comment.author.username")

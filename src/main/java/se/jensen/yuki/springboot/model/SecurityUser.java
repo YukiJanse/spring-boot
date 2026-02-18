@@ -14,11 +14,11 @@ public class SecurityUser implements UserDetails {
     private final String role;
     private final String password;
 
-    public SecurityUser(User user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.role = user.getRole();
-        this.password = user.getPassword();
+    public SecurityUser(Long id, String email, String role, String password) {
+        this.id = id;
+        this.email = email;
+        this.role = role;
+        this.password = password;
     }
 
     public SecurityUser(Long id, String email, String role) {
@@ -55,8 +55,7 @@ public class SecurityUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String r = role;
-        String role = r == null || r.isBlank() ? "ROLE_USER" :
-                (r.startsWith("ROLE_") ? r : "ROLE_" + r);
+        String role = r == null || r.isBlank() ? "USER" : r;
         return List.of(new SimpleGrantedAuthority(role));
     }
 

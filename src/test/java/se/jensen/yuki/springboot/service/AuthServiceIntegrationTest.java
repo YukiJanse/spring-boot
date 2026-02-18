@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import se.jensen.yuki.springboot.dto.auth.AuthRegisterRequestDTO;
 import se.jensen.yuki.springboot.dto.auth.LoginDTO;
 import se.jensen.yuki.springboot.model.RefreshToken;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class AuthServiceIntegrationTest {
     private AuthService authService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -38,7 +38,7 @@ public class AuthServiceIntegrationTest {
     @BeforeEach
     void clean() {
         refreshTokenRepository.deleteAll();
-        userRepository.deleteAll();
+        userJpaRepository.deleteAll();
     }
 
     // ---------- register ----------
@@ -62,7 +62,7 @@ public class AuthServiceIntegrationTest {
         assertThat(tokenPair.refreshToken()).isNotBlank();
 
         // user保存されてる
-        User user = userRepository
+        UserJpaEntity user = userJpaRepository
                 .findByEmail("test@test.com")
                 .orElseThrow();
 
@@ -85,7 +85,7 @@ public class AuthServiceIntegrationTest {
     void login_success() {
 
         // user準備
-        User user = User.builder()
+        UserJpaEntity user = UserJpaEntity.builder()
                 .username("loginuser")
                 .email("login@test.com")
                 .password(passwordEncoder.encode("secret"))
@@ -94,7 +94,7 @@ public class AuthServiceIntegrationTest {
                 .bio("bio")
                 .build();
 
-        userRepository.save(user);
+        userJpaRepository.save(user);
 
         LoginDTO dto =
                 new LoginDTO("login@test.com", "secret");
@@ -113,7 +113,7 @@ public class AuthServiceIntegrationTest {
     void refreshToken_rotate_success() {
 
         // user作成
-        User user = User.builder()
+        UserJpaEntity user = UserJpaEntity.builder()
                 .username("refreshuser")
                 .email("refresh@test.com")
                 .password(passwordEncoder.encode("pw"))
@@ -122,7 +122,7 @@ public class AuthServiceIntegrationTest {
                 .bio("bio")
                 .build();
 
-        userRepository.save(user);
+        userJpaRepository.save(user);
 
         // 最初のtoken
         RefreshToken rt =

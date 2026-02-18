@@ -1,0 +1,117 @@
+package se.jensen.yuki.springboot.user.usecase.command;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import se.jensen.yuki.springboot.testutil.TestPasswords;
+import se.jensen.yuki.springboot.user.domain.User;
+import se.jensen.yuki.springboot.user.domain.UserRepository;
+import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
+import se.jensen.yuki.springboot.user.domain.vo.UserId;
+import se.jensen.yuki.springboot.user.web.dto.UserUpdatePasswordRequest;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class UpdatePasswordUseCaseTest {
+
+    @Mock
+    UserRepository userRepository;
+
+    @Mock
+    PasswordEncoder passwordEncoder;
+
+    @InjectMocks
+    UpdatePasswordUseCase useCase;
+
+    @Test
+    void execute_shouldUpdatePassword_whenValidRequest() {
+        Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
+
+        UserUpdatePasswordRequest request =
+                new UserUpdatePasswordRequest("new-password", "current-password");
+
+        User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
+
+        String currentEncodedPassword = TestPasswords.hashed("current-password");
+
+        when(userRepository.findById(userIdVo)).thenReturn(user);
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn(currentEncodedPassword);
+
+        when(passwordEncoder.matches(request.currentPassword(), currentEncodedPassword))
+                .thenReturn(true);
+
+        when(passwordEncoder.matches(request.newPassword(), currentEncodedPassword))
+                .thenReturn(false);
+
+        String newHashedPassword = TestPasswords.hashed("new-encoded-password");
+
+        when(passwordEncoder.encode("new-password"))
+                .thenReturn(newHashedPassword);
+
+        useCase.execute(userId, request);
+
+        verify(user).changePassword(HashedPassword.of(newHashedPassword));
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void execute_shouldThrowException_whenCurrentPasswordIncorrect() {
+        Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
+
+        UserUpdatePasswordRequest request =
+                new UserUpdatePasswordRequest("new-password", "wrong-password");
+
+        User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
+
+        when(userRepository.findById(userIdVo)).thenReturn(user);
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
+
+        when(passwordEncoder.matches("wrong-password", "encoded-password"))
+                .thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.execute(userId, request));
+
+        verify(user, never()).changePassword(any());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void execute_shouldThrowException_whenNewPasswordSameAsCurrent() {
+        Long userId = 1L;
+        UserId userIdVo = UserId.of(userId);
+
+        UserUpdatePasswordRequest request =
+                new UserUpdatePasswordRequest("same-password", "current-password");
+
+        User user = mock(User.class);
+        HashedPassword password = mock(HashedPassword.class);
+
+        when(userRepository.findById(userIdVo)).thenReturn(user);
+        when(user.getPassword()).thenReturn(password);
+        when(password.getValue()).thenReturn("encoded-password");
+
+        when(passwordEncoder.matches("current-password", "encoded-password"))
+                .thenReturn(true);
+
+        when(passwordEncoder.matches("same-password", "encoded-password"))
+                .thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.execute(userId, request));
+
+        verify(user, never()).changePassword(any());
+        verify(userRepository, never()).save(any());
+    }
+}

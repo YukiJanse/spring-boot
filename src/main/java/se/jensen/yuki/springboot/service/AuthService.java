@@ -15,26 +15,27 @@ import se.jensen.yuki.springboot.exception.UnauthorizedException;
 import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.model.RefreshToken;
 import se.jensen.yuki.springboot.model.SecurityUser;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.RefreshTokenRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final long refreshTokenDurationSeconds = 60L * 60 * 24 * 30; // 30 days
 
-    public RefreshToken createRefreshToken(User user) {
+    public RefreshToken createRefreshToken(UserJpaEntity user) {
         RefreshToken rt = RefreshToken.builder()
                 .user(user)
                 .token(generateTokenValue())
@@ -58,7 +59,7 @@ public class AuthService {
             return Optional.empty();
         }
 
-        User user = rt.getUser();
+        UserJpaEntity user = rt.getUser();
         // rotation: revoke old token and create a new one
         rt.setRevoked(true);
         refreshTokenRepository.save(rt);
@@ -74,12 +75,12 @@ public class AuthService {
     }
 
     private String generateTokenValue() {
-        return UUID.randomUUID().toString() + "-" + UUID.randomUUID();
+        return UUID.randomUUID() + "-" + UUID.randomUUID();
     }
 
     @Transactional
     public TokenPair registerUser(AuthRegisterRequestDTO dto) {
-        User user = User.builder()
+        UserJpaEntity user = UserJpaEntity.builder()
                 .username(dto.username())
                 .email(dto.email())
                 .password(passwordEncoder.encode(dto.password()))
@@ -88,7 +89,7 @@ public class AuthService {
                 .role("USER")
                 .build();
 
-        User registeredUser = userRepository.save(user);
+        UserJpaEntity registeredUser = userJpaRepository.save(user);
         String access = jwtService.generateAccessToken(registeredUser.getId());
         RefreshToken rt = createRefreshToken(registeredUser);
 
@@ -101,7 +102,7 @@ public class AuthService {
         );
 
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
-        User user = userRepository.findById(securityUser.getId())
+        UserJpaEntity user = userJpaRepository.findById(securityUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("No user found"));
         String access = jwtService.generateAccessToken(securityUser.getId());
         RefreshToken rt = createRefreshToken(user);
@@ -127,7 +128,7 @@ public class AuthService {
 
     public void checkCurrentPassword(String currentPassword) {
         Long userId = getCurrentUserId();
-        User currentUser = userRepository.findById(userId)
+        UserJpaEntity currentUser = userJpaRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("No user found"));
         if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
             throw new BadCredentialsException("Wrong password");

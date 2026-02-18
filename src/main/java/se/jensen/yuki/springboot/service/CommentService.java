@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service;
 import se.jensen.yuki.springboot.dto.comment.*;
 import se.jensen.yuki.springboot.exception.CommentNotFoundException;
 import se.jensen.yuki.springboot.exception.PostNotFoundException;
-import se.jensen.yuki.springboot.exception.UserNotFoundException;
 import se.jensen.yuki.springboot.mapper.CommentMapper;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
 import se.jensen.yuki.springboot.repository.CommentRepository;
 import se.jensen.yuki.springboot.repository.PostRepository;
-import se.jensen.yuki.springboot.repository.UserRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.usecase.UserLoadService;
 
 import java.time.Instant;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private final UserLoadService userLoadService;
     private final PostRepository postRepository;
     private final CommentMapper commentMapper;
 
@@ -37,7 +36,7 @@ public class CommentService {
         } else if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        User author = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Author doesn't exist with id=" + userId));
+        UserJpaEntity author = userLoadService.requireJpaById(userId);
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post doesn't exist with id=" + postId));
         Comment comment;
         // If there is a parent comment

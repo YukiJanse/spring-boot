@@ -13,8 +13,12 @@ import se.jensen.yuki.springboot.dto.like.LikeResponse;
 import se.jensen.yuki.springboot.dto.like.PostLikeResponse;
 import se.jensen.yuki.springboot.model.Comment;
 import se.jensen.yuki.springboot.model.Post;
-import se.jensen.yuki.springboot.model.User;
-import se.jensen.yuki.springboot.repository.*;
+import se.jensen.yuki.springboot.repository.CommentLikeRepository;
+import se.jensen.yuki.springboot.repository.CommentRepository;
+import se.jensen.yuki.springboot.repository.PostLikeRepository;
+import se.jensen.yuki.springboot.repository.PostRepository;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaEntity;
+import se.jensen.yuki.springboot.user.infrastructure.jpa.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +31,7 @@ class LikeServiceIntegrationTest {
     private LikeService likeService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private PostRepository postRepository;
@@ -41,15 +45,15 @@ class LikeServiceIntegrationTest {
     @Autowired
     private CommentLikeRepository commentLikeRepository;
 
-    private User user;
+    private UserJpaEntity user;
     private Post post;
     private Comment comment;
 
     @BeforeEach
     void setUp() {
 
-        user = userRepository.save(
-                User.builder()
+        user = userJpaRepository.save(
+                UserJpaEntity.builder()
                         .username("user1")
                         .email("user1@test.com")
                         .password("pass")
@@ -211,7 +215,7 @@ class LikeServiceIntegrationTest {
         assertThat(slice.getContent()).hasSize(1);
 
         CommentLikeResponse res =
-                slice.getContent().get(0);
+                slice.getContent().getFirst();
 
         assertThat(res.userId()).isEqualTo(user.getId());
     }
