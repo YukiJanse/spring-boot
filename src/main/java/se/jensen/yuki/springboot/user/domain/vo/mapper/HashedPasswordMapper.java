@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import se.jensen.yuki.springboot.user.domain.vo.HashedPassword;
 
 @Mapper(componentModel = "spring")
-public interface PasswordMapper {
+public interface HashedPasswordMapper {
     /**
      * Maps a HashedPassword value object to its String representation.
      *
