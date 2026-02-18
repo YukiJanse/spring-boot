@@ -38,7 +38,7 @@ public class UserCommandController {
      */
     @PutMapping("/me/profile")
     public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UserUpdateProfileRequest request) {
-        log.debug("Stating to update my profile");
+        log.debug("Starting to update my profile");
 
         UserProfileResponse response = updateUserProfileUseCase.execute(authService.getCurrentUserId(), request);
 
@@ -53,7 +53,7 @@ public class UserCommandController {
      */
     @PutMapping("/me/email")
     public ResponseEntity<Void> updateEmail(@Valid @RequestBody UserUpdateEmailRequest request) {
-        log.debug("Stating to update my Account");
+        log.debug("Starting to update my Account");
 
         updateEmailUseCase.execute(authService.getCurrentUserId(), request);
 
@@ -70,7 +70,7 @@ public class UserCommandController {
      */
     @PutMapping("/me/password")
     public ResponseEntity<Void> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request) {
-        log.debug("Stating to update my Account");
+        log.debug("Starting to update my Account");
 
         updatePasswordUseCase.execute(authService.getCurrentUserId(), request);
 
