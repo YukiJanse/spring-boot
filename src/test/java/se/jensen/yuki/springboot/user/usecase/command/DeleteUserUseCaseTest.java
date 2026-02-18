@@ -11,6 +11,7 @@ import se.jensen.yuki.springboot.user.domain.vo.UserId;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteUserUseCaseTest {
@@ -30,6 +31,7 @@ class DeleteUserUseCaseTest {
 
         // Then
         assertDoesNotThrow(() -> useCase.execute(userId));
+        verify(userRepository).deleteById(UserId.of(userId));
     }
 
     @Test
