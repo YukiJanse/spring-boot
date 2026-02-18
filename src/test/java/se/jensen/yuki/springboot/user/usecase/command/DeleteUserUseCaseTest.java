@@ -26,9 +26,6 @@ class DeleteUserUseCaseTest {
         // Given
         Long userId = 1L;
 
-        // When
-        useCase.execute(userId);
-
         // Then
         assertDoesNotThrow(() -> useCase.execute(userId));
         verify(userRepository).deleteById(UserId.of(userId));
